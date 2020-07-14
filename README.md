@@ -27,3 +27,11 @@ All parameters are written to an ASCII file for further computations.
 
 Syntax:
 $ helmparms3d src_points.txt dest_points.txt outfile_name.txt
+
+Build: make
+
+Install: sudo make install
+
+Uninstall: sudo make uninstall
+
+Usage: ipa2arpabet-de filename
