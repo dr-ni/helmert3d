@@ -25,12 +25,17 @@ helmparms3d (a free command-line tool) reads two ASCII point-files and
 calculates all necessary papameters for Helmert transformation.
 All parameters are written to an ASCII file for further computations.
 
-Build: make
+Build:
 
-Install: sudo make install
+       make
 
-Uninstall: sudo make uninstall
+Install:
 
+       sudo make install
+
+Uninstall:
+
+       sudo make uninstall
 
        
 Parameter computation:
