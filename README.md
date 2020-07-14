@@ -33,7 +33,11 @@ Uninstall: sudo make uninstall
 
 Usage: 
        
+Parameter computation:
+
        helmparms3d xyz_src_points xyz_dest_points helmert_param_filename
+       
+Transformation:
        
        helmert3d [xyz_filename] [helmert_param_filename]
 
