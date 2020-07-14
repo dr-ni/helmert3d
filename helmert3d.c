@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
       printf("Error opening %s\r\n",ifilename);
       exit(-1);
    }
-   ofile = fopen( "ixyz_helmert.xyz", "w");
+   ofile = fopen( "transformed.xyz", "w");
    if(ofile == NULL){
       printf("Error writing %s\r\n","ixyz_helmert.xyz");
       exit(-1);
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]){
       zout=tz+m*(x*r31+y*r32+z*r33);
       fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
    }
-   printf("...done\nResults written to xyz_helmert.xyz\n");
+   printf("...done\nResults written to transformed.xyz\n");
    return(0);
 }
 
