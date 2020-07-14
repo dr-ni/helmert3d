@@ -33,7 +33,7 @@ Uninstall: sudo make uninstall
 
 Usage: 
        
-       helmparms3d src_points.txt dest_points.txt outfile_name.txt
+       helmparms3d xyz_src_points xyz_dest_points helmert_param_filename
        
        helmert3d [xyz_filename] [helmert_param_filename]
 
