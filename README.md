@@ -25,13 +25,10 @@ helmparms3d (a free command-line tool) reads two ASCII point-files and
 calculates all necessary papameters for Helmert transformation.
 All parameters are written to an ASCII file for further computations.
 
-Syntax:
-$ helmparms3d src_points.txt dest_points.txt outfile_name.txt
-
 Build: make
 
 Install: sudo make install
 
 Uninstall: sudo make uninstall
 
-Usage: ipa2arpabet-de filename
+Usage: helmparms3d src_points.txt dest_points.txt outfile_name.txt
