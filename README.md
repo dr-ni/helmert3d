@@ -5,12 +5,20 @@ to produce transformations between different Cartesian coordinate systems:
 
 Xt=T+sRX (1)
 
-where Xt = transformed coordinate vector
+where
+
+Xt = transformed coordinate vector
+
 X = initial coordinate vector
+
 T = translation vector
+
 R = rotation matrix including rx, ry, rz
+
 rx, ry, rz = rotations around the coordinate axes
+
 s = scale factor
+
 Seven parameters are required for this kind of transformation
 and can be calculated from a set of at least three point correspondences.
 helmparms3d (a free command-line tool) reads two ASCII point-files and
