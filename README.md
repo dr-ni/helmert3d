@@ -32,3 +32,19 @@ Install: sudo make install
 Uninstall: sudo make uninstall
 
 Usage: helmparms3d src_points.txt dest_points.txt outfile_name.txt
+       
+       helmert3d [xyz_filename] [helmert_param_filename]
+
+helmert parameter file format:
+ r11 r12 r13
+ r21 r22 r23
+ r31 r32 r33
+ tx ty tz
+ m
+
+xyz data file format:
+ x[1] y[1] z[1]
+ ..   ..   ..
+ ..   ..   ..
+ x[n] y[n] z[n]
+
