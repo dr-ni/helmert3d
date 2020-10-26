@@ -1,0 +1,39 @@
+.TH "helmert3d" 1 0.50 "26 Oct 2020" "User Manual"
+
+.SH NAME
+helmert3d
+
+.SH DESCRIPTION
+The 3D Helmert transformation.
+
+.SH SYNOPSIS
+helmert3d [xyz_filename] [helmert_param_filename]
+
+.SH FILES
+.TP
+xyz data file format:
+ x[1] y[1] z[1]
+ ..   ..   ..
+ ..   ..   ..
+ x[n] y[n] z[n]
+.TP
+helmert parameter file format:
+ r11 r12 r13
+ r21 r22 r23
+ r31 r32 r33
+ tx ty tz
+ m
+
+.SH EXAMPLE
+helmert3d examples/testpoints_src.txt examples/testpoints_params.txt
+
+.SH COPYRIGHT
+Copyright (C) 2011 Uwe Niethammer <uniethammer@users.sourceforge.net>
+ All rights reserved.
+
+.SH SEE ALSO
+ helmparms3d(1)
+
+.SH CONTACTS
+ Website: http://helmparms3d.sourceforge.net/, https://github.com/dr-ni/helmparms3d
+ Email: uniethammer@users.sourceforge.net
