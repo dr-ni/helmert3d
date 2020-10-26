@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -g
 SRCS=src
-MANS=man
+MANS=man/man1
 DEST=/usr/local/bin/
 MANDEST=/usr/share/man/man1
 
