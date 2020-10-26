@@ -8,10 +8,10 @@ MANDEST=/usr/share/man/man1
 all: helmert3d helmparms3d
 
 helmert3d: $(SRCS)/helmert3d.c
-	$(CC) $(CFAGS) -o $@ $^ -lm
+	$(CC) $(CLFAGS) -o $@ $^ -lm
 
 helmparms3d: $(SRCS)/helmparms3d.c $(SRCS)/svdm.c
-	$(CC) $(CFAGS) -o $@ $^ -lm
+	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 clean:
 	rm -f helmparms3d helmert3d
