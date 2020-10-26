@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "svdm.h"
-#define VERS 0.50
+#define VERS 0.51
 int debug=0;
 
 
