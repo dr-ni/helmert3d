@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define VERS 0.51
 
 int main(int argc, char* argv[]){
  FILE *parmfile;
@@ -45,11 +46,11 @@ int main(int argc, char* argv[]){
  double yout=0.0;
  double zout=0.0;
 
-   printf("\n******************************\n");
-   printf(  "* 3D-Helmert Transformation  *\n");
-   printf(  "*        15.11.2013          *\n");
-   printf(  "*     (c) U. Niethammer      *\n");
-   printf(  "******************************\n");
+   printf("\n***********************************\n");
+   printf(  "* 3D-Helmert Transformation v%1.2f *\n",VERS);
+   printf(  "*           26.10.2020            *\n");
+   printf(  "*       (c) U. Niethammer         *\n");
+   printf(  "***********************************\n");
    if(argc < 3){
       printf("Syntax:  %s [xyz_filename] [helmert_param_filename]\n\n",argv[0]);
       printf("helmert parameter file format:\n");
