@@ -1,21 +1,23 @@
 CC=gcc
 CFLAGS=-Wall -g
+SRCS=src
+DEST=/usr/local/bin/
 
 all: helmert3d helmparms3d
 
-helmert3d: helmert3d.c
-	$(CC) $(CFAGS) -o helmert3d helmert3d.c -lm
+helmert3d: $(SRCS)/helmert3d.c
+	$(CC) $(CFAGS) -o $@ $^ -lm
 
-helmparms3d: helmparms3d.c svdm.c
-	$(CC) $(CFAGS) -o helmparms3d helmparms3d.c svdm.c -lm
+helmparms3d: $(SRCS)/helmparms3d.c $(SRCS)/svdm.c
+	$(CC) $(CFAGS) -o $@ $^ -lm
 
 clean:
 	rm -f helmparms3d helmert3d
 
 install:
-	cp helmparms3d /usr/local/bin/
-	cp helmert3d /usr/local/bin/
+	cp helmparms3d $(DEST)
+	cp helmert3d $(DEST)
 
 uninstall:
-	rm -f /usr/local/bin/helmparms3d
-	rm -f /usr/local/bin/helmert3d
+	rm -f $(DEST)/helmparms3d
+	rm -f $(DEST)/helmert3d
