@@ -289,7 +289,7 @@ int main(int argc, char* argv[]){
 
    printf("\n*******************************\n");
    printf(  "*      helmparms3d v%1.2f      *\n",VERS);
-   printf(  "*   (c) U. Niethammer 2011    *\n");
+   printf(  "*   (c) U. Niethammer 2020    *\n");
    printf(  "*  http://helmparms3d.sf.net  *\n");
    printf(  "*******************************\n");
    memset(src_pts_name,0,sizeof(src_pts_name));
