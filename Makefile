@@ -1,9 +1,11 @@
 CC=gcc
 CFLAGS=-Wall -g
 SRCS=src
+PREFIX=/usr/local
+BINS=bin
 MANS=man/man1
-DEST=/usr/local/bin/
-MANDEST=/usr/share/man/man1
+INSTALL=install
+RM=rm -f
 
 all: helmert3d helmparms3d
 
@@ -17,13 +19,15 @@ clean:
 	rm -f helmparms3d helmert3d
 
 install:
-	cp helmparms3d $(DEST)
-	cp helmert3d $(DEST)
-	cp $(MANS)/helmparms3d.1 $(MANDEST)
-	cp $(MANS)/helmert3d.1 $(MANDEST)
+	$(INSTALL) -d $(PREFIX)/$(BINS)
+	$(INSTALL) -d $(PREFIX)/$(MANS)
+	$(INSTALL) -m 0755 helmparms3d $(PREFIX)/$(BINS)
+	$(INSTALL) -m 0755 helmert3d $(PREFIX)/$(BINS)
+	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
+	$(INSTALL) -m 0644 $(MANS)/helmert3d.1 $(PREFIX)/$(MANS)
 
 uninstall:
-	rm -f $(DEST)/helmparms3d
-	rm -f $(DEST)/helmert3d
-	rm -f $(MANDEST)/helmparms3d.1
-	rm -f $(MANDEST)/helmert3d.1
+	$(RM) $(PREFIX)/$(BINS)/helmparms3d
+	$(RM) $(PREFIX)/$(BINS)/helmert3d
+	$(RM) $(PREFIX)/$(MANS)/helmparms3d.1
+	$(RM) $(PREFIX)/$(MANS)/helmert3d.1
