@@ -33,30 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "svdm.h"
 
 //svd function
-#define SIGN(u, v)     ( (v)>=0.0 ? fabs(u) : -fabs(u) )
+#define SIGN(u, v)    ( (v)>=0.0 ? fabs(u) : -fabs(u) )
 #define MAX(x, y)     ( (x) >= (y) ? (x) : (y) )
-
-static double   radius(double u, double v)
-{
-    double          w;
-    u = fabs(u);
-    v = fabs(v);
-    if (u > v)
-    {
-        w = v / u;
-        return (u * sqrt(1. + w * w));
-    }
-    else
-    {
-        if (v)
-        {
-            w = u / v;
-            return (v * sqrt(1. + w * w));
-        }
-        else
-            return 0.0;
-    }
-}
 
 /*
  Given matrix a[m][n], m>=n, using svd decomposition a = p d q' to get
@@ -64,11 +42,11 @@ static double   radius(double u, double v)
 */
 void svd(int m, int n, double **a, double **p, double *d, double **q)
 {
-    int             flag, i, its, j, jj, k, l, nm, nm1 = n - 1, mm1 = m - 1;
-    double          c, f, h, s, x, y, z;
-    double          anorm = 0, g = 0, scale = 0;
-    //double         *r = tvector_alloc(0, n, double);
-    double                  *r = (double*)malloc(sizeof(double)*n);
+    int        flag, i, its, j, jj, k, l, nm, nm1 = n - 1, mm1 = m - 1;
+    double     c, f, h, s, x, y, z;
+    double     anorm = 0, g = 0, scale = 0;
+    //double    *r = tvector_alloc(0, n, double);
+    double     *r = (double*)malloc(sizeof(double)*n);
 
     for (i = 0; i < m; i++)
         for (j = 0; j < n; j++)
@@ -234,7 +212,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
                     if (fabs(f) + anorm != anorm)
                     {
                         g = d[i];
-                        h = radius(f, g);
+                        h = sqrt(f * f + g * g);
                         d[i] = h;
                         h = 1.0 / h;
                         c = g * h;
@@ -272,7 +250,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
             g = r[nm];
             h = r[k];
             f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);
-            g = radius(f, 1.0);
+            g = sqrt(f * f + 1.0);
             /* next QR transformation */
             f = ((x - z) * (x + z) + h * ((y / (f + SIGN(g, f))) - h)) / x;
             c = s = 1.0;
@@ -283,7 +261,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
                 y = d[i];
                 h = s * g;
                 g = c * g;
-                z = radius(f, h);
+                z = sqrt(f * f + h * h);
                 r[j] = z;
                 c = f / z;
                 s = h / z;
@@ -298,7 +276,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
                     q[jj][j] = x * c + z * s;
                     q[jj][i] = z * c - x * s;
                 }
-                z = radius(f, h);
+                z = sqrt(f * f + h * h);
                 d[j] = z;       /* rotation can be arbitrary
                                                  * id z=0 */
                 if (z)
@@ -326,8 +304,4 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
 
     // dhli add: the original code does not sort the eigen value
     // should do that and change the eigen vector accordingly
-
 }
-
-
-
