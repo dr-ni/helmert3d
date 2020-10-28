@@ -212,14 +212,14 @@ long get_m_size(char *filename)
     while(fgets( buf, 128, ptsfile)!=NULL)
     {
         if( strcmp(buf,"\n") != 0 && strcmp(buf,"\r\n") != 0 && strcmp(buf,"\0") != 0)
-		{
+        {
             linecount++;
         }
-		else
-		{
+        else
+        {
             fprintf(stderr,"Error, %s: Line is empty\n",filename);
-        	exit(-1);
-        };
+            exit(-1);
+        }
     }
     fclose(ptsfile);
     return(linecount);
