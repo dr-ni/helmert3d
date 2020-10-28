@@ -211,7 +211,15 @@ long get_m_size(char *filename)
     // Count points
     while(fgets( buf, 128, ptsfile)!=NULL)
     {
-        linecount++;
+        if( strcmp(buf,"\n") != 0 && strcmp(buf,"\r\n") != 0 && strcmp(buf,"\0") != 0)
+		{
+            linecount++;
+        }
+		else
+		{
+            fprintf(stderr,"Error, %s: Line is empty\n",filename);
+        	exit(-1);
+        };
     }
     fclose(ptsfile);
     return(linecount);
@@ -242,7 +250,7 @@ void read_points(char *filename, double **pts_mat)
     }
     printf("%s:\n", filename);
     plot_matrix(stdout, linecount, 3, pts_mat);
-    printf("\n");
+    fprintf(stdout,"\n");
     fclose(ptsfile);
 }
 
@@ -274,14 +282,14 @@ int main(int argc, char* argv[])
     double scal=0.0, ppm=0.0;
     FILE *outfile;
 
-    printf("\n*******************************\n");
-    printf(  "*      helmparms3d v%1.2f      *\n",VERS);
-    printf(  "*   (c) U. Niethammer 2020    *\n");
-    printf(  "*  http://helmparms3d.sf.net  *\n");
-    printf(  "*******************************\n");
+    fprintf(stdout,"\n*******************************\n");
+    fprintf(stdout,  "*      helmparms3d v%1.2f      *\n",VERS);
+    fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
+    fprintf(stdout,  "*  http://helmparms3d.sf.net  *\n");
+    fprintf(stdout,  "*******************************\n");
     if(argc < 4)
     {
-        printf("Syntax: %s [src_pts_filename] [dest_pts_filename] [out_param_filename]\n\n\n",argv[0]);
+        fprintf(stdout,"Syntax: %s [src_pts_filename] [dest_pts_filename] [out_param_filename]\n\n\n",argv[0]);
         exit(1);
     }
     src_pts_name = argv[1];
@@ -292,7 +300,13 @@ int main(int argc, char* argv[])
     m2 = get_m_size(dest_pts_name);
     if(m2 != m)
     {
-        printf("Error, number of source and destination points is not equal!\n");
+        fprintf(stderr,"Error, number of source and destination points is not equal!\n");
+        exit(-1);
+    }
+
+    if((m < 3) || (m2 < 3))
+    {
+        fprintf(stderr,"Error, number of point correspondences is too small!\n");
         exit(-1);
     }
 
@@ -318,7 +332,7 @@ int main(int argc, char* argv[])
 
     transpose_matrix(m, m, dest_mat, dest_mat_T);
 #if DEBUG
-    printf("%s_T:\n",dest_pts_name);
+    fprintf(stdout,"%s_T:\n",dest_pts_name);
     plot_matrix(stdout,  n, m, dest_mat_T);
 #endif
 
@@ -337,28 +351,28 @@ int main(int argc, char* argv[])
         }
     }
 #if DEBUG
-    printf("E:\n");
+    fprintf(stdout,"E:\n");
     plot_matrix(stdout,  m, m, E_mat);
 
-    printf("dest_mat_T:\n");
+    fprintf(stdout,"dest_mat_T:\n");
     plot_matrix(stdout,  n, m, dest_mat_T);
 #endif
 
     matmult(dest_mat_T, m, m, E_mat, m, m,  C_mat_interm, m, n);
 #if DEBUG
-    printf("C_interm:\n");
+    fprintf(stdout,"C_interm:\n");
     plot_matrix(stdout,  n, m, C_mat_interm);
 #endif
 
     matmult(C_mat_interm, n, m, src_mat, m, n,  C_mat, n, n);
 #if DEBUG
-    printf("C:\n");
+    fprintf(stdout,"C:\n");
     plot_matrix(stdout,  n, n, C_mat);
 #endif
 
     copy_matrix(n,n,C_mat,P_mat);
 #if DEBUG
-    printf("P:\n");
+    fprintf(stdout,"P:\n");
     plot_matrix(stdout,  n, n, P_mat);
 #endif
 
@@ -366,12 +380,12 @@ int main(int argc, char* argv[])
     svd(n, n, C_mat, P_mat, D_vec, Q_mat);
     transpose_matrix(n, n, P_mat, P_mat_T);
 #if DEBUG
-    printf("P\n");
+    fprintf(stdout,"P\n");
     plot_matrix(stdout,  n, n, P_mat);
-    printf("P_T\n");
+    fprintf(stdout,"P_T\n");
     plot_matrix(stdout,  n, n, P_mat_T);
 
-    printf("D_vec\n");
+    fprintf(stdout,"D_vec\n");
     plot_vector(stdout,  n, D_vec);
 #endif
     for(k=0; k<n; k++)
@@ -384,29 +398,29 @@ int main(int argc, char* argv[])
         }
     }
 #if DEBUG
-    printf("D\n");
+    fprintf(stdout,"D\n");
     plot_matrix(stdout,  n, n, D_mat);
 #endif
 
     matmult(Q_mat, n, n, P_mat_T, n, n,  R_mat, n, n);
 #if DEBUG
-    printf("R_trans:\n");
+    fprintf(stdout,"R_trans:\n");
     plot_matrix(stdout, n, n, R_mat);
 #endif
 
     matmult(C_mat, m, n, R_mat, n, m,  C_mat_interm, m, n);
 #if DEBUG
-    printf("C_interm:\n");
+    fprintf(stdout,"C_interm:\n");
     plot_matrix(stdout,  n, n, C_mat_interm);
 #endif
     trace1=trace(n,n,C_mat_interm);
 #if DEBUG
-    printf("\ntra=%lf\n\n",trace1);
+    fprintf(stdout,"\ntra=%lf\n\n",trace1);
 #endif
 
     transpose_matrix(m, m, src_mat, src_mat_T);
 #if DEBUG
-    printf("%s_T:\n",src_pts_name);
+    fprintf(stdout,"%s_T:\n",src_pts_name);
     plot_matrix(stdout,  n, m, src_mat_T);
 #endif
 
@@ -414,25 +428,25 @@ int main(int argc, char* argv[])
     init_matrix(m,m,C_mat_interm);
     matmult(src_mat_T, m, m, E_mat, m, m,  C_mat_interm, n, n);
 #if DEBUG
-    printf("C_interm:\n");
+    fprintf(stdout,"C_interm:\n");
     plot_matrix(stdout,  n, m, C_mat_interm);
 #endif
 
     matmult(C_mat_interm, n, m, src_mat, m, n,  C_mat, n, n);
 #if DEBUG
-    printf("C:\n");
+    fprintf(stdout,"C:\n");
     plot_matrix(stdout,  n, n, C_mat);
 #endif
 
     trace2=trace(n,n,C_mat);
 #if DEBUG
-    printf("\ntra=%lf\n\n",trace2);
+    fprintf(stdout,"\ntra=%lf\n\n",trace2);
 #endif
 
     scal=trace1/trace2;
     ppm=scal-1.0;
 #if DEBUG
-    printf("\nscal = %10.10lf\nscal = %10.10lf ppm\n\n",scal, ppm);
+    fprintf(stdout,"\nscal = %10.10lf\nscal = %10.10lf ppm\n\n",scal, ppm);
 #endif
 
     init_matrix(m,m,C_mat);
@@ -440,13 +454,13 @@ int main(int argc, char* argv[])
 
     matmult(src_mat, m, n, R_mat, n,m,  D_mat_interm, m, n);
 #if DEBUG
-    printf("C_mat_interm:\n");
+    fprintf(stdout,"C_mat_interm:\n");
     plot_matrix(stdout,  m, n, D_mat_interm);
 #endif
 
     scal_matrix(m, n, scal, D_mat_interm, C_mat_interm);
 #if DEBUG
-    printf("C_mat_interm:\n");
+    fprintf(stdout,"C_mat_interm:\n");
     plot_matrix(stdout,  m, n, C_mat_interm);
 #endif
 
@@ -474,32 +488,32 @@ int main(int argc, char* argv[])
     }
     matrix_multiply(n, m, src_mat_T, one_vec, T_vec);
 #if DEBUG
-    printf("T:\n");
+    fprintf(stdout,"T:\n");
     plot_vector(stdout, 3, T_vec);
 #endif
 
     outfile = fopen(out_param_name, "w");
     if(outfile == NULL)
     {
-        printf("Error writing %s\r\n",out_param_name);
+        fprintf(stderr,"Error writing %s\r\n",out_param_name);
         exit(-1);
     }
     init_matrix(m,m,src_mat_T);
     transpose_matrix(m, m, R_mat, src_mat_T);
     plot_matrix(outfile, n, n, src_mat_T);
-    printf("R =\n");
+    fprintf(stdout,"R =\n");
     fflush(stdout);
     plot_matrix(stdout, n, n, src_mat_T);
-    printf("\n");
+    fprintf(stdout,"\n");
     fflush(stdout);
     plot_vector(outfile, 3, T_vec);
-    printf("T =\n");
+    fprintf(stdout,"T =\n");
     fflush(stdout);
     plot_vector(stdout, 3, T_vec);
-    printf("\n");
+    fprintf(stdout,"\n");
     fflush(stdout);
     fprintf(outfile, "%10.10lf\n", scal);
-    printf("s = %10.10lf (= %10.10lf ppm)\n\n",scal, ppm);
+    fprintf(stdout,"s = %10.10lf (= %10.10lf ppm)\n\n",scal, ppm);
     fflush(stdout);
     fclose(outfile);
 
@@ -520,6 +534,6 @@ int main(int argc, char* argv[])
     freematrix(m, C_mat_interm);
     freematrix(m, src_mat_T);
     freematrix(m, D_mat_interm);
-    printf("\n...done\n");
+    fprintf(stdout,"\n...done\n");
     return(0);
 }
