@@ -217,7 +217,7 @@ long get_m_size(char *filename)
         }
         else
         {
-            fprintf(stderr,"Error, %s: Line is empty\n",filename);
+            fprintf(stderr,"Error, %s: wrong data format\n",filename);
             exit(1);
         }
     }
