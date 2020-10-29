@@ -1,4 +1,4 @@
-# helmparms3d
+# helmert3d
 
 ## About
 
@@ -50,12 +50,12 @@ sudo make uninstall
 
 Parameter computation:
 ```sh
-helmparms3d [xyz_src_points] [xyz_dest_points] [helmert_param_filename]
+helmparms3d [xyz_src_infilename] [xyz_dest_infilename] [parms_outfilename]
 ```
 
 Transformation:
 ```sh
-helmert3d [xyz_filename] [helmert_param_filename]
+helmert3d [xyz_src_infilename] [param_infilename] [xyz_outfilename]
 ```
 
 ## Files
