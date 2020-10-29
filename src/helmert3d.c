@@ -21,6 +21,37 @@
 
 #define VERS "1.0.0"
 
+
+long get_m_size(char *filename)
+{
+    FILE *ptsfile;
+    char buf[256];
+    long linecount=0;
+
+    memset(buf, 0, sizeof(buf));
+    ptsfile = fopen( filename, "r");
+    if(ptsfile == NULL)
+    {
+        fprintf(stderr,"Error opening %s\r\n",filename);
+        exit(1);
+    }
+    // Count points
+    while(fgets( buf, 128, ptsfile)!=NULL)
+    {
+        if( strcmp(buf,"\n") != 0 && strcmp(buf,"\r\n") != 0 && strcmp(buf,"\0") != 0)
+        {
+            linecount++;
+        }
+        else
+        {
+            fprintf(stderr,"Error, %s: Line is empty\n",filename);
+            exit(1);
+        }
+    }
+    fclose(ptsfile);
+    return(linecount);
+}
+
 int main(int argc, char* argv[])
 {
     FILE *parmfile;
@@ -37,6 +68,7 @@ int main(int argc, char* argv[])
     double r31=0.0, r32=0.0, r33=0.0;
     double x=0.0, y=0.0, z=0.0;
     double xout=0.0, yout=0.0, zout=0.0;
+    long l=0;
 
     fprintf(stdout,"\n*******************************\n");
     fprintf(stdout,  "*      helmpert3d v%s      *\n",VERS);
@@ -53,18 +85,20 @@ int main(int argc, char* argv[])
         exit(1);
     }
     ifilename = argv[1];
+    l = get_m_size(ifilename);
+    fprintf(stdout,"found %ld points\n",l);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
-        fprintf(stderr,"Error opening %s\r\n",ifilename);
-        exit(-1);
+        fprintf(stderr,"Error opening %s\n",ifilename);
+        exit(1);
     }
     pfilename = argv[2];
     parmfile = fopen( pfilename, "r");
     if(parmfile == NULL)
     {
-        fprintf(stderr,"Error opening %s\r\n",ifilename);
-        exit(-1);
+        fprintf(stderr,"Error opening %s\n",ifilename);
+        exit(1);
     }
     if(argc > 3)
     {
@@ -73,8 +107,8 @@ int main(int argc, char* argv[])
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
     {
-        fprintf(stderr,"Error writing %s\r\n","ixyz_helmert.xyz");
-        exit(-1);
+        fprintf(stderr,"Error writing %s\n","ixyz_helmert.xyz");
+        exit(1);
     }
 
     fprintf(stdout,"reading helmert parameters...\n");
@@ -85,6 +119,7 @@ int main(int argc, char* argv[])
     else
     {
         fprintf(stderr,"Error reading %s\n",ifilename);
+        exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -93,6 +128,7 @@ int main(int argc, char* argv[])
     else
     {
         fprintf(stderr,"Error reading %s\n",ifilename);
+        exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -101,6 +137,7 @@ int main(int argc, char* argv[])
     else
     {
         fprintf(stderr,"Error reading %s\n",ifilename);
+        exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -109,6 +146,7 @@ int main(int argc, char* argv[])
     else
     {
         fprintf(stderr,"Error reading %s\n",ifilename);
+        exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -117,6 +155,7 @@ int main(int argc, char* argv[])
     else
     {
         fprintf(stderr,"Error reading %s\n",ifilename);
+        exit(1);
     }
 
     fprintf(stdout,"%lf %lf %lf\n", r11 , r12 , r13);
@@ -137,5 +176,8 @@ int main(int argc, char* argv[])
         fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
     }
     fprintf(stdout,"...done\nResults written to %s\n", ofilename);
+    fclose(ifile);
+    fclose(parmfile);
+    fclose(ofile);
     return(0);
 }

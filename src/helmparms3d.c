@@ -206,7 +206,7 @@ long get_m_size(char *filename)
     if(ptsfile == NULL)
     {
         fprintf(stderr,"Error opening %s\r\n",filename);
-        exit(-1);
+        exit(1);
     }
     // Count points
     while(fgets( buf, 128, ptsfile)!=NULL)
@@ -218,7 +218,7 @@ long get_m_size(char *filename)
         else
         {
             fprintf(stderr,"Error, %s: Line is empty\n",filename);
-            exit(-1);
+            exit(1);
         }
     }
     fclose(ptsfile);
@@ -237,7 +237,7 @@ void read_points(char *filename, double **pts_mat)
     if(ptsfile == NULL)
     {
         fprintf(stderr,"Error opening %s\r\n",filename);
-        exit(-1);
+        exit(1);
     }
     linecount=0;
     while(fgets( buf, 128, ptsfile)!=NULL)
@@ -310,7 +310,7 @@ int main(int argc, char* argv[])
     if((m < 3) || (m2 < 3))
     {
         fprintf(stderr,"Error, number of point correspondences is too small!\n");
-        exit(-1);
+        exit(1);
     }
 
     src_mat = matrix(m, m, src_mat);
@@ -499,7 +499,7 @@ int main(int argc, char* argv[])
     if(outfile == NULL)
     {
         fprintf(stderr,"Error writing %s\r\n",out_param_name);
-        exit(-1);
+        exit(1);
     }
     init_matrix(m,m,src_mat_T);
     transpose_matrix(m, m, R_mat, src_mat_T);
