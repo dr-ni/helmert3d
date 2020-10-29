@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     long l=0;
 
     fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmert3d v%s      *\n",VERS);
+    fprintf(stdout,  "*      helmert3d v%s       *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
 
@@ -84,6 +84,7 @@ int main(int argc, char* argv[])
         fprintf(stdout," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
         exit(1);
     }
+    fprintf(stdout,"reading points...\n");
     ifilename = argv[1];
     l = get_m_size(ifilename);
     fprintf(stdout,"found %ld points\n",l);
@@ -94,10 +95,16 @@ int main(int argc, char* argv[])
         exit(1);
     }
     pfilename = argv[2];
+    l = get_m_size(pfilename);
+    if(l != 5)
+    {
+        fprintf(stderr,"Error wrong format in %s\n",pfilename);
+        exit(1);
+    }
     parmfile = fopen( pfilename, "r");
     if(parmfile == NULL)
     {
-        fprintf(stderr,"Error opening %s\n",ifilename);
+        fprintf(stderr,"Error opening %s\n",pfilename);
         exit(1);
     }
     if(argc > 3)
@@ -118,7 +125,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr,"Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",pfilename);
         exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
@@ -127,7 +134,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr,"Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",pfilename);
         exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
@@ -136,7 +143,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr,"Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",pfilename);
         exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
@@ -145,7 +152,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr,"Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",pfilename);
         exit(1);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
@@ -154,7 +161,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        fprintf(stderr,"Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",pfilename);
         exit(1);
     }
 

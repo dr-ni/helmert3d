@@ -79,5 +79,5 @@ XYZ data file format:
 
 ----
 
-https://github.com/dr-ni/helmparms3d
+https://github.com/dr-ni/helmert3d
 
