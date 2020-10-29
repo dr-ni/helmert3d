@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     long l=0;
 
     fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmpert3d v%s      *\n",VERS);
+    fprintf(stdout,  "*      helmert3d v%s      *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
 

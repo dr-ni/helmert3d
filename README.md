@@ -66,7 +66,7 @@ Helmert parameter file format:
  r21 r22 r23
  r31 r32 r33
  tx ty tz
- m
+ s
 ```
 
 XYZ data file format:
