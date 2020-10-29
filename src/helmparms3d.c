@@ -537,6 +537,6 @@ int main(int argc, char* argv[])
     freematrix(m, C_mat_interm);
     freematrix(m, src_mat_T);
     freematrix(m, D_mat_interm);
-    fprintf(stdout,"\n...done\n");
+    fprintf(stdout,"...done\n");
     return(0);
 }
