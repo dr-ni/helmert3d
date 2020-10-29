@@ -45,25 +45,25 @@ int main(int argc, char* argv[])
 
     if(argc < 3)
     {
-        printf("\nSyntax:  %s [xyz_src_infilename] [helmert_param_infilename] [xyz_dest_outfilename]\n\n",argv[0]);
-        printf("helmert parameter file format:\n");
-        printf(" r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
-        printf("xyz data file format:\n");
-        printf(" x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
+        fprintf(stdout,"\nSyntax:  %s [xyz_src_infilename] [helmert_param_infilename] [xyz_dest_outfilename]\n\n",argv[0]);
+        fprintf(stdout,"helmert parameter file format:\n");
+        fprintf(stdout," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
+        fprintf(stdout,"xyz data file format:\n");
+        fprintf(stdout," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
         exit(1);
     }
     ifilename = argv[1];
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
-        printf("Error opening %s\r\n",ifilename);
+        fprintf(stderr,"Error opening %s\r\n",ifilename);
         exit(-1);
     }
     pfilename = argv[2];
     parmfile = fopen( pfilename, "r");
     if(parmfile == NULL)
     {
-        printf("Error opening %s\r\n",ifilename);
+        fprintf(stderr,"Error opening %s\r\n",ifilename);
         exit(-1);
     }
     if(argc > 3)
@@ -73,18 +73,18 @@ int main(int argc, char* argv[])
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
     {
-        printf("Error writing %s\r\n","ixyz_helmert.xyz");
+        fprintf(stderr,"Error writing %s\r\n","ixyz_helmert.xyz");
         exit(-1);
     }
 
-    printf("reading helmert parameters...\n");
+    fprintf(stdout,"reading helmert parameters...\n");
     if(fgets( buf, 128, parmfile)!=NULL)
     {
         sscanf( buf, "%lf %lf %lf", &r11, &r12, &r13);
     }
     else
     {
-        printf("Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",ifilename);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        printf("Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",ifilename);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        printf("Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",ifilename);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        printf("Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",ifilename);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
@@ -116,18 +116,18 @@ int main(int argc, char* argv[])
     }
     else
     {
-        printf("Error reading %s\n",ifilename);
+        fprintf(stderr,"Error reading %s\n",ifilename);
     }
 
-    printf("%lf %lf %lf\n", r11 , r12 , r13);
-    printf("%lf %lf %lf\n", r21 , r22 , r23);
-    printf("%lf %lf %lf\n", r31 , r32 , r33);
-    printf("%lf %lf %lf\n", tx , ty , tz);
-    printf("%lf\n", m);
+    fprintf(stdout,"%lf %lf %lf\n", r11 , r12 , r13);
+    fprintf(stdout,"%lf %lf %lf\n", r21 , r22 , r23);
+    fprintf(stdout,"%lf %lf %lf\n", r31 , r32 , r33);
+    fprintf(stdout,"%lf %lf %lf\n", tx , ty , tz);
+    fprintf(stdout,"%lf\n", m);
 
-    printf("...done\n");
+    fprintf(stdout,"...done\n");
 
-    printf("starting transformation...\n");
+    fprintf(stdout,"starting transformation...\n");
     while(fgets( buf, 128, ifile)!=NULL)
     {
         sscanf( buf, "%lf %lf %lf", &x, &y, &z);
@@ -136,6 +136,6 @@ int main(int argc, char* argv[])
         zout=tz+m*(x*r31+y*r32+z*r33);
         fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
     }
-    printf("...done\nResults written to %s\n", ofilename);
+    fprintf(stdout,"...done\nResults written to %s\n", ofilename);
     return(0);
 }
