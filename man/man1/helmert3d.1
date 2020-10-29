@@ -1,10 +1,18 @@
-.TH "helmert3d" 1 0.51 "27 Oct 2020" "User Manual"
+.TH "helmert3d" 1 1.0.0 "29 Oct 2020" "User Manual"
 
 .SH NAME
 helmert3d
 
 .SH DESCRIPTION
-The 3D Helmert transformation.
+3D Helmert transformation Tool
+The 3D Helmert transformation is a frequently used method in geodesy to produce transformations between different Cartesian coordinate systems: Xt=T+sRX
+where
+Xt = transformed coordinate vector
+X = initial coordinate vector
+T = translation vector
+R = rotation matrix including rx, ry, rz
+rx, ry, rz = rotations around the coordinate axes
+s = scale factor
 
 .SH SYNOPSIS
 helmert3d [xyz_filename] [helmert_param_filename] [xyz_output[=transformed.xyz]]
@@ -22,18 +30,32 @@ helmert parameter file format:
  r21 r22 r23
  r31 r32 r33
  tx ty tz
- m
+ s
 
 .SH EXAMPLE
 helmert3d examples/testpoints_src.txt examples/testpoints_params.txt
 
 .SH COPYRIGHT
-Copyright (C) 2011 Uwe Niethammer <uniethammer@users.sourceforge.net>
- All rights reserved.
+helmpert3d:
+Copyright (C) 2011 U. Niethammer
+
+ 	 This program is free software; you can redistribute it and/or modify
+ 	 it under the terms of the GNU General Public License as published by
+ 	 the Free Software Foundation; either version 2 of the License, or (at
+ 	 your option) any later version.
+ 	
+ 	 This program is distributed in the hope that it will be useful, but
+ 	 WITHOUT ANY WARRANTY; without even the implied warranty of
+ 	 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ 	 General Public License for more details.
+ 	
+ 	 You should have received a copy of the GNU General Public License
+ 	 along with this program; if not, write to the Free Software
+ 	 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 .SH SEE ALSO
  helmparms3d(1)
 
 .SH CONTACTS
- Website: http://helmparms3d.sourceforge.net/, https://github.com/dr-ni/helmparms3d
- Email: uniethammer@users.sourceforge.net
+ Website: https://github.com/dr-ni/helmparms3d
+

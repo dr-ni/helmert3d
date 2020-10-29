@@ -5,7 +5,7 @@
 The 3D Helmert transformation is a frequently used method in geodesy
 to produce transformations between different Cartesian coordinate systems:
 ```
-Xt=T+sRX (1)
+Xt=T+sRX
 ```
 
 where

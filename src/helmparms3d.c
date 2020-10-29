@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "svdm.h"
-#define VERS 0.51
+#define VERS 1.0.0
 #define DEBUG 0
 
 void freematrix(int m, double ** u)
@@ -285,11 +285,14 @@ int main(int argc, char* argv[])
     fprintf(stdout,"\n*******************************\n");
     fprintf(stdout,  "*      helmparms3d v%1.2f      *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
-    fprintf(stdout,  "*  http://helmparms3d.sf.net  *\n");
     fprintf(stdout,  "*******************************\n");
     if(argc < 4)
     {
         fprintf(stdout,"Syntax: %s [src_pts_filename] [dest_pts_filename] [out_param_filename]\n\n\n",argv[0]);
+        fprintf(stderr,"helmert parameter file format:\n");
+        fprintf(stderr," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
+        fprintf(stderr,"xyz data file format:\n");
+        fprintf(stderr," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
         exit(1);
     }
     src_pts_name = argv[1];
@@ -301,7 +304,7 @@ int main(int argc, char* argv[])
     if(m2 != m)
     {
         fprintf(stderr,"Error, number of source and destination points is not equal!\n");
-        exit(-1);
+        exit(1);
     }
 
     if((m < 3) || (m2 < 3))
