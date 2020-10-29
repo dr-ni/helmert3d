@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERS 1.0.0
+#define VERS "1.0.0"
 
 int main(int argc, char* argv[])
 {
@@ -39,13 +39,13 @@ int main(int argc, char* argv[])
     double xout=0.0, yout=0.0, zout=0.0;
 
     fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmpert3d v%1.2f      *\n",VERS);
+    fprintf(stdout,  "*      helmpert3d v%s      *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
 
     if(argc < 3)
     {
-        printf("Syntax:  %s [xyz_filename] [helmert_param_filename] [xyz_output[=transformed.xyz]]\n\n",argv[0]);
+        printf("\nSyntax:  %s [xyz_src_infilename] [helmert_param_infilename] [xyz_dest_outfilename]\n\n",argv[0]);
         printf("helmert parameter file format:\n");
         printf(" r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
         printf("xyz data file format:\n");
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
     printf("%lf %lf %lf\n", r21 , r22 , r23);
     printf("%lf %lf %lf\n", r31 , r32 , r33);
     printf("%lf %lf %lf\n", tx , ty , tz);
-    printf("%lf\n", s);
+    printf("%lf\n", m);
 
     printf("...done\n");
 
