@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
     {
-        fprintf(stderr,"Error writing %s\n","ixyz_helmert.xyz");
+        fprintf(stderr,"Error writing %s\n",ofilename);
         exit(EXIT_FAILURE);
     }
 
