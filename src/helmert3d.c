@@ -84,10 +84,10 @@ int main(int argc, char* argv[])
         fprintf(stdout," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
         exit(1);
     }
-    fprintf(stdout,"reading points...\n");
+    fprintf(stdout,"Reading points...\n");
     ifilename = argv[1];
     l = get_m_size(ifilename);
-    fprintf(stdout,"found %ld points\n",l);
+    fprintf(stdout,"Found %ld points\n",l);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
@@ -114,11 +114,11 @@ int main(int argc, char* argv[])
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
     {
-        fprintf(stderr,"Error writing %s\n","ixyz_helmert.xyz");
+        fprintf(stderr,"Error opening %s\n",ofilename);
         exit(1);
     }
 
-    fprintf(stdout,"reading helmert parameters...\n");
+    fprintf(stdout,"Reading helmert parameters...\n");
     if(fgets( buf, 128, parmfile)!=NULL)
     {
         sscanf( buf, "%lf %lf %lf", &r11, &r12, &r13);
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 
     fprintf(stdout,"...done\n");
 
-    fprintf(stdout,"starting transformation...\n");
+    fprintf(stdout,"Calculating transformation...\n");
     while(fgets( buf, 128, ifile)!=NULL)
     {
         sscanf( buf, "%lf %lf %lf", &x, &y, &z);
