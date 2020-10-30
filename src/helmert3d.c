@@ -22,7 +22,7 @@
 #define VERS "1.0.0"
 
 
-long get_m_size(char *filename)
+static long get_m_size(char *filename)
 {
     FILE *ptsfile;
     char buf[256];
@@ -33,7 +33,7 @@ long get_m_size(char *filename)
     if(ptsfile == NULL)
     {
         fprintf(stderr,"Error opening %s\r\n",filename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     // Count points
     while(fgets( buf, 128, ptsfile)!=NULL)
@@ -45,10 +45,10 @@ long get_m_size(char *filename)
         else
         {
             fprintf(stderr,"Error, %s: wrong data format\n",filename);
-            exit(1);
+            exit(EXIT_FAILURE);
         }
     }
-    fclose(ptsfile);
+    (void)fclose(ptsfile);
     return(linecount);
 }
 
@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
     double x=0.0, y=0.0, z=0.0;
     double xout=0.0, yout=0.0, zout=0.0;
     long l=0;
+    int stat=0;
 
     fprintf(stdout,"\n*******************************\n");
     fprintf(stdout,  "*      helmert3d v%s       *\n",VERS);
@@ -82,7 +83,7 @@ int main(int argc, char* argv[])
         fprintf(stdout," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
         fprintf(stdout,"xyz data file format:\n");
         fprintf(stdout," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     fprintf(stdout,"Reading points...\n");
     ifilename = argv[1];
@@ -92,20 +93,20 @@ int main(int argc, char* argv[])
     if(ifile == NULL)
     {
         fprintf(stderr,"Error opening %s\n",ifilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     pfilename = argv[2];
     l = get_m_size(pfilename);
     if(l != 5)
     {
         fprintf(stderr,"Error wrong format in %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     parmfile = fopen( pfilename, "r");
     if(parmfile == NULL)
     {
         fprintf(stderr,"Error opening %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(argc > 3)
     {
@@ -114,55 +115,80 @@ int main(int argc, char* argv[])
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
     {
-        fprintf(stderr,"Error opening %s\n",ofilename);
-        exit(1);
+        fprintf(stderr,"Error writing %s\n","ixyz_helmert.xyz");
+        exit(EXIT_FAILURE);
     }
 
     fprintf(stdout,"Reading helmert parameters...\n");
     if(fgets( buf, 128, parmfile)!=NULL)
     {
-        sscanf( buf, "%lf %lf %lf", &r11, &r12, &r13);
+        stat=sscanf(buf, "%lf %lf %lf", &r11, &r12, &r13);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",pfilename);
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         fprintf(stderr,"Error reading %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
-        sscanf( buf, "%lf %lf %lf", &r21, &r22, &r23);
+        stat=sscanf( buf, "%lf %lf %lf", &r21, &r22, &r23);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",pfilename);
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         fprintf(stderr,"Error reading %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
-        sscanf( buf, "%lf %lf %lf", &r31, &r32, &r33);
+        stat=sscanf( buf, "%lf %lf %lf", &r31, &r32, &r33);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",pfilename);
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         fprintf(stderr,"Error reading %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
-        sscanf( buf, "%lf %lf %lf", &tx, &ty, &tz);
+        stat=sscanf( buf, "%lf %lf %lf", &tx, &ty, &tz);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",pfilename);
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         fprintf(stderr,"Error reading %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     if(fgets( buf, 128, parmfile)!=NULL)
     {
-        sscanf( buf, "%lf", &m);
+        stat=sscanf( buf, "%lf", &m);
+        if(stat != 1)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",pfilename);
+            exit(EXIT_FAILURE);
+        }
     }
     else
     {
         fprintf(stderr,"Error reading %s\n",pfilename);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     fprintf(stdout,"%lf %lf %lf\n", r11 , r12 , r13);
@@ -173,18 +199,23 @@ int main(int argc, char* argv[])
 
     fprintf(stdout,"...done\n");
 
-    fprintf(stdout,"Calculating transformation...\n");
+    fprintf(stdout,"Starting transformation...\n");
     while(fgets( buf, 128, ifile)!=NULL)
     {
-        sscanf( buf, "%lf %lf %lf", &x, &y, &z);
+        stat=sscanf( buf, "%lf %lf %lf", &x, &y, &z);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",ifilename);
+            exit(EXIT_FAILURE);
+        }
         xout=tx+m*(x*r11+y*r12+z*r13);
         yout=ty+m*(x*r21+y*r22+z*r23);
         zout=tz+m*(x*r31+y*r32+z*r33);
         fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
     }
     fprintf(stdout,"...done\nResults written to %s\n", ofilename);
-    fclose(ifile);
-    fclose(parmfile);
-    fclose(ofile);
+    (void)fclose(ifile);
+    (void)fclose(parmfile);
+    (void)fclose(ofile);
     return(0);
 }
