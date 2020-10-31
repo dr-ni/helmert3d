@@ -21,12 +21,11 @@
 
 #define VERS "1.0.0"
 
-
-static long get_m_size(char *filename)
+static size_t get_m_size(char *filename)
 {
     FILE *ptsfile;
     char buf[256];
-    long linecount=0;
+    size_t linecount=0;
 
     memset(buf, 0, sizeof(buf));
     ptsfile = fopen( filename, "r");
@@ -68,7 +67,7 @@ int main(int argc, char* argv[])
     double r31=0.0, r32=0.0, r33=0.0;
     double x=0.0, y=0.0, z=0.0;
     double xout=0.0, yout=0.0, zout=0.0;
-    long l=0;
+    size_t l=0;
     int stat=0;
 
     fprintf(stdout,"\n*******************************\n");
@@ -88,7 +87,7 @@ int main(int argc, char* argv[])
     fprintf(stdout,"Reading points...\n");
     ifilename = argv[1];
     l = get_m_size(ifilename);
-    fprintf(stdout,"Found %ld points\n",l);
+    fprintf(stdout,"Found %zu points\n",l);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {

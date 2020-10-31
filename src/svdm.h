@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _SVD_H
 #define _SVD_H
 
-void svd(int m, int n, double **a, double **p, double *d, double **q);
+void svd(long long m, long long n, double **a, double **p, double *d, double **q);
 
 #endif
 
