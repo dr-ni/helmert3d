@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "svdm.h"
 
@@ -40,14 +41,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  Given matrix a[m][n], m>=n, using svd decomposition a = p d q' to get
  p[m][n], diag d[n] and q[n][n].
 */
-void svd(int m, int n, double **a, double **p, double *d, double **q)
+void svd(long long m, long long n, double **a, double **p, double *d, double **q)
 {
-    int        flag, i, its, j, jj, k, l, nm, nm1 = n - 1, mm1 = m - 1;
+    long long  flag, i, its, j, jj, k, l, nm, nm1 = n - 1, mm1 = m - 1;
     double     c, f, h, s, x, y, z;
     double     anorm = 0, g = 0, scale = 0;
     //double    *r = tvector_alloc(0, n, double);
     double     *r = (double*)malloc(sizeof(double)*n);
-
+    if(r == NULL)
+    {
+        fprintf(stderr,"Error memory allocation error\n");
+        exit(EXIT_FAILURE);
+    }
     for (i = 0; i < m; i++)
         for (j = 0; j < n; j++)
             p[i][j] = a[i][j];
@@ -144,7 +149,11 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
                 }
             }
             for (j = l; j < n; j++)
-                q[i][j] = q[j][i] = 0.0;
+            {
+                //UN changed ugly style q[i][j] = q[j][i] = 0.0;
+                q[j][i] = 0.0;
+                q[i][j] = q[j][i];
+            }
         }
         q[i][i] = 1.0;
         g = r[i];
@@ -191,8 +200,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
             for (l = k; l >= 0; l--)
             {
                 /* test for splitting */
-                nm = l - 1;     /* note that r[l] is always
-                                                 * zero */
+                nm = l - 1;     /* note that r[l] is always zero */
                 if (fabs(r[l]) + anorm == anorm)
                 {
                     flag = 0;
@@ -203,8 +211,7 @@ void svd(int m, int n, double **a, double **p, double *d, double **q)
             }
             if (flag)
             {
-                c = 0.0;        /* cancellation of r[l], if
-                                                 * l>1 */
+                c = 0.0;        /* cancellation of r[l], if l>1 */
                 s = 1.0;
                 for (i = l; i <= k; i++)
                 {
