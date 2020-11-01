@@ -43,11 +43,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 void svd(long long m, long long n, double **a, double **p, double *d, double **q)
 {
-    long long  flag, i, its, j, jj, k, l, nm, nm1 = n - 1, mm1 = m - 1;
+    long long  flag = 0, i = 0, its = 0, j = 0, jj = 0, k = 0, l = 0, nm = 0, nm1 = n - 1, mm1 = m - 1;
     double     c, f, h, s, x, y, z;
     double     anorm = 0, g = 0, scale = 0;
     //double    *r = tvector_alloc(0, n, double);
-    double     *r = (double*)malloc(sizeof(double)*n);
+    double     *r = (double*)calloc(0, sizeof(double)*(size_t)n);
     if(r == NULL)
     {
         fprintf(stderr,"Error memory allocation error\n");
