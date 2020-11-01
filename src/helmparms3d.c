@@ -22,7 +22,7 @@
 #define VERS "1.0.0"
 #define DEBUG 0
 
-static void freematrix(size_t m, double ** u)
+static void freematrix(size_t m, /*@only@*/ /*@out@*/ /*@null@*/ double ** u)
 {
     size_t i=0;
     for(i = 0; i < m; i++)
@@ -32,7 +32,7 @@ static void freematrix(size_t m, double ** u)
     free(u);
 }
 
-static void freevector(double * u)
+static void freevector(/*@only@*/ /*@out@*/ /*@null@*/ double * u)
 {
     free(u);
 }
