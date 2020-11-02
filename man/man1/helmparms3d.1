@@ -37,7 +37,9 @@ helmert parameter file format:
  s
 
 .SH EXAMPLE
-helmparms3d /usr/local/share/helmparms3d/testpoints_src.txt /usr/local/share/helmparms3d/testpoints_dest.txt testparms.txt
+export EXAMP=/usr/local/share/helmparms3d
+
+helmparms3d $EXAMP/testpoints_src.txt $EXAMP/testpoints_dest.txt testparms.txt
 
 .SH COPYRIGHT
 helmparms3d:
