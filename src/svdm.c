@@ -47,7 +47,7 @@ void svd(long long m, long long n, double **a, double **p, double *d, double **q
     double     c, f, h, s, x, y, z;
     double     anorm = 0, g = 0, scale = 0;
     //double    *r = tvector_alloc(0, n, double);
-    double     *r = (double*)calloc(0, sizeof(double)*(size_t)n);
+    double     *r = (double*)calloc(1, sizeof(double)*(size_t)n);
     if(r == NULL)
     {
         fprintf(stderr,"Error memory allocation error\n");
