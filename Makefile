@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -g
+CFLAGS=-Wall -O2
 SRCS=src
 PREFIX=/usr/local
 DATAP=share/helmparms3d

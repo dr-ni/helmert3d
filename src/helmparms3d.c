@@ -40,7 +40,7 @@ static void freevector(/*@only@*/ /*@out@*/ /*@null@*/ double * u)
 static double ** matrix(size_t m, size_t n, /*@null@*/double ** u)
 {
     size_t i=0;
-    u = malloc(m * sizeof(*u));
+    u = calloc(m, sizeof(*u));
     if(u == NULL)
     {
         fprintf(stderr,"Error memory allocation error\n");
@@ -60,7 +60,7 @@ static double ** matrix(size_t m, size_t n, /*@null@*/double ** u)
 
 static double * vector(size_t m, /*@null@*/double * u)
 {
-    u = malloc(m * sizeof(*u));
+    u = calloc(m, sizeof(*u));
     if(u == NULL)
     {
         fprintf(stderr,"Error memory allocation error\n");
