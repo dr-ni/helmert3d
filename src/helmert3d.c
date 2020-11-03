@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
     fprintf(stdout,"Reading points...\n");
     ifilename = argv[1];
     l = get_m_size(ifilename);
-    fprintf(stdout,"Found %zu points\n",l);
+    fprintf(stdout,"Found %lu points\n",(unsigned long)l);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
