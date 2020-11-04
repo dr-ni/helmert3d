@@ -1,5 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -O2
+LDFLAGS=-lm #-s # - strip for win
 SRCS=src
 PREFIX=/usr/local
 DATAP=share/helmparms3d
@@ -12,10 +13,10 @@ RMD=rm -rf
 all: helmert3d helmparms3d
 
 helmert3d: $(SRCS)/helmert3d.c
-	$(CC) $(CFLAGS) -o $@ $^ -lm
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 helmparms3d: $(SRCS)/helmparms3d.c $(SRCS)/svdm.c
-	$(CC) $(CFLAGS) -o $@ $^ -lm
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
 	rm -f helmparms3d helmert3d
