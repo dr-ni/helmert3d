@@ -3,8 +3,8 @@ CFLAGS?=-Wall -O2
 LDFLAGS?=-lm #-s # - strip for win
 AR?=ar
 INSTALL?=install
-RM?=rm -f # not works for win
-RMD?=$(RM) -r # not works for win
+RM?=rm -f # not working for win
+RMD?=$(RM) -r # not working for win
 PREFIX?=/usr/local
 SRCS=src
 DOCS=/usr/share/doc/helmert3d
@@ -24,8 +24,15 @@ helmert3d: $(SRCS)/helmert3d.c
 helmparms3d: $(SRCS)/helmparms3d.c libsvdm.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-clean: # not works for win
-	$(RM) helmparms3d helmert3d libsvdm.a $(SRCS)/svdm.o
+pdfman: # not working for win
+	groff -m man -T ps $(MANS)/helmert3d.1 > man_helmert3d.ps
+	ps2pdf man_helmert3d.ps man_helmert3d.pdf
+	groff -m man -T ps $(MANS)/helmparms3d.1 > man_helmparms3d.ps
+	ps2pdf man_helmparms3d.ps man_helmparms3d.pdf
+	$(RM) *.ps
+
+clean: # not working for win
+	$(RM) helmparms3d helmert3d libsvdm.a $(SRCS)/svdm.o *.pdf
 
 install:
 	$(INSTALL) -d $(PREFIX)/$(BINS)

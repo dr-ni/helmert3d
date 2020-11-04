@@ -1,4 +1,5 @@
 *.pdf
+*.ps
 *.exe
 *.o
 libsvdm.a
