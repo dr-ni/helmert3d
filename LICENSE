@@ -1,7 +1,7 @@
                                 LICENSE
 
 helmert3d helmparms3d:
-Copyright (C) 2011 U. Niethammer, http://helmparms3d.sourceforge.net/
+Copyright (C) 2020 U. Niethammer, https://github.com/dr-ni/helmert3d
  	
 	 This program is free software; you can redistribute it and/or modify
  	 it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@ Copyright (C) 2011 U. Niethammer, http://helmparms3d.sourceforge.net/
  	 along with this program; if not, write to the Free Software
  	 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-svdm:
+libsvdm:
 Copyright (c) 2003, Division of Imaging Science and Biomedical Engineering, University of Manchester, UK.
 
  	Redistribution and use in source and binary forms, with or without modification,

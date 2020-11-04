@@ -1,16 +1,16 @@
 CC=gcc
-CFLAGS=-Wall -O2
-LDFLAGS=-lm #-s # - strip for win
+CFLAGS?=-Wall -O2
+LDFLAGS?=-lm #-s # - strip for win
+AR?=ar
+INSTALL?=install
+RM?=rm -f # not works for win
+RMD?=$(RM) -r # not works for win
+PREFIX?=/usr/local
 SRCS=src
-PREFIX=/usr/local
-DATAP=share/helmparms3d
+DOCS=/usr/share/doc/helmert3d
 BINS=bin
 EXAMPS=examples
 MANS=man/man1
-INSTALL=install
-AR=ar
-RM=rm -f # not works for win
-RMD=rm -rf # not works for win
 
 all: helmert3d helmparms3d
 
@@ -30,17 +30,17 @@ clean: # not works for win
 install:
 	$(INSTALL) -d $(PREFIX)/$(BINS)
 	$(INSTALL) -d $(PREFIX)/$(MANS)
-	$(INSTALL) -d $(PREFIX)/$(DATAP)
+	$(INSTALL) -d $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0755 helmparms3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0755 helmert3d $(PREFIX)/$(BINS)
-	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(PREFIX)/$(DATAP)
-	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(PREFIX)/$(DATAP)
+	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
+	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
 	$(INSTALL) -m 0644 $(MANS)/helmert3d.1 $(PREFIX)/$(MANS)
 
 uninstall:
 	$(RM) $(PREFIX)/$(BINS)/helmparms3d
 	$(RM) $(PREFIX)/$(BINS)/helmert3d
-	$(RMD) $(PREFIX)/$(DATAP)
+	$(RMD) $(DOCS)
 	$(RM) $(PREFIX)/$(MANS)/helmparms3d.1
 	$(RM) $(PREFIX)/$(MANS)/helmert3d.1

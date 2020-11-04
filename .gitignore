@@ -1,0 +1,6 @@
+*.pdf
+*.exe
+*.o
+libsvdm.a
+helmert3d
+helmparms3d
