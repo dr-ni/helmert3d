@@ -8,18 +8,24 @@ BINS=bin
 EXAMPS=examples
 MANS=man/man1
 INSTALL=install
-RM=rm -f
-RMD=rm -rf
+AR=ar
+RM=rm -f # not works for win
+RMD=rm -rf # not works for win
+
 all: helmert3d helmparms3d
+
+libsvdm.a: $(SRCS)/svdm.c
+	$(CC) $(CFLAGS) -c -o $(SRCS)/svdm.o $^
+	$(AR) rcs $@ $(SRCS)/svdm.o
 
 helmert3d: $(SRCS)/helmert3d.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-helmparms3d: $(SRCS)/helmparms3d.c $(SRCS)/svdm.c
+helmparms3d: $(SRCS)/helmparms3d.c libsvdm.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-clean:
-	rm -f helmparms3d helmert3d
+clean: # not works for win
+	$(RM) helmparms3d helmert3d libsvdm.a $(SRCS)/svdm.o
 
 install:
 	$(INSTALL) -d $(PREFIX)/$(BINS)
