@@ -24,8 +24,10 @@ s = scale factor
 ```
 
 Seven parameters are required for this kind of transformation
-and can be calculated from a set of at least three point correspondences.
-helmparms3d reads two ASCII point-files and calculates all necessary
+and can be calculated from a set of at least three point correspondences
+[Crosilla, F. (1999). Procrustes analysis and geodetic sciences. Technical report, Quo
+vadis geodesia...?, Department of Geodesy and GeoInformatics, University of Stuttgart].
+The tool helmparms3d reads two ASCII point-files and calculates all necessary
 parameters for Helmert transformation. All parameters are written to
 an ASCII file for further computations. The Helmert transformation can
 then be calculated with helmert3d.
