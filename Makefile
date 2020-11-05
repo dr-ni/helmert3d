@@ -40,6 +40,8 @@ install:
 	$(INSTALL) -d $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0755 helmparms3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0755 helmert3d $(PREFIX)/$(BINS)
+	$(INSTALL) -m 0644 README.md $(DOCS)
+	$(INSTALL) -m 0644 LICENSE $(DOCS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
