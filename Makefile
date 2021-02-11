@@ -12,7 +12,7 @@ BINS=bin
 EXAMPS=examples
 MANS=man/man1
 
-all: helmert3d helmparms3d
+all: helmert3d helmparms3d helmdiff3d
 
 libsvdm.a: $(SRCS)/svdm.c
 	$(CC) $(CFLAGS) -c -o $(SRCS)/svdm.o $^
@@ -24,15 +24,20 @@ helmert3d: $(SRCS)/helmert3d.c
 helmparms3d: $(SRCS)/helmparms3d.c libsvdm.a
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
+helmdiff3d: $(SRCS)/helmdiff3d.c
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
 pdfman: # not working for win
 	groff -m man -T ps $(MANS)/helmert3d.1 > man_helmert3d.ps
 	ps2pdf man_helmert3d.ps man_helmert3d.pdf
 	groff -m man -T ps $(MANS)/helmparms3d.1 > man_helmparms3d.ps
 	ps2pdf man_helmparms3d.ps man_helmparms3d.pdf
+	groff -m man -T ps $(MANS)/helmdiff3d.1 > man_helmdiff3d.ps
+	ps2pdf man_helmdiff3d.ps man_helmdiff3d.pdf
 	$(RM) *.ps
 
 clean: # not working for win
-	$(RM) helmparms3d helmert3d libsvdm.a $(SRCS)/svdm.o *.pdf
+	$(RM) helmparms3d helmert3d helmdiff3d libsvdm.a $(SRCS)/svdm.o *.pdf
 
 install:
 	$(INSTALL) -d $(PREFIX)/$(BINS)
@@ -40,16 +45,20 @@ install:
 	$(INSTALL) -d $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0755 helmparms3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0755 helmert3d $(PREFIX)/$(BINS)
+	$(INSTALL) -m 0755 helmdiff3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0644 README.md $(DOCS)
 	$(INSTALL) -m 0644 LICENSE $(DOCS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
 	$(INSTALL) -m 0644 $(MANS)/helmert3d.1 $(PREFIX)/$(MANS)
+	$(INSTALL) -m 0644 $(MANS)/helmdiff3d.1 $(PREFIX)/$(MANS)
 
 uninstall:
 	$(RM) $(PREFIX)/$(BINS)/helmparms3d
 	$(RM) $(PREFIX)/$(BINS)/helmert3d
+	$(RM) $(PREFIX)/$(BINS)/helmdiff3d
 	$(RMD) $(DOCS)
 	$(RM) $(PREFIX)/$(MANS)/helmparms3d.1
 	$(RM) $(PREFIX)/$(MANS)/helmert3d.1
+	$(RM) $(PREFIX)/$(MANS)/helmdiff3d.1

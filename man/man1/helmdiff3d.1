@@ -1,0 +1,53 @@
+.TH "helmdiff3d" 1 1.0.1 "11 Feb 2021" "User Manual"
+
+.SH NAME
+helmdiff3d
+
+.SH DESCRIPTION
+Diff 3D Helmert transformation Tool
+
+.SH SYNOPSIS
+helmdiff3d [xyz_src_infilename] [xyz_dest_infilename] [xyz_diff_outfilename]
+
+.SH FILES
+.TP
+xyz data file format:
+
+ x[1] y[1] z[1]
+ ..   ..   ..
+ ..   ..   ..
+ x[n] y[n] z[n]
+
+.SH EXAMPLE
+export EXAMP=/usr/share/doc/helmert3d/examples/
+
+ helmparms3d $EXAMP/testpoints_src.txt $EXAMP/testpoints_dest.txt testparms.txt
+ helmert3d $EXAMP/testpoints_src.txt testparms.txt destpoints.txt
+ helmdiff3d $EXAMP/testpoints_dest.txt destpoints.txt diffpoints.txt
+
+.SH COPYRIGHT
+helmert3d:
+
+Copyright (c) 2020 U. Niethammer
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+.SH SEE ALSO
+ helmparms3d(1),
+ helmert3d(1)
+
+.SH CONTACT
+ Website: https://github.com/dr-ni/helmert3d
+

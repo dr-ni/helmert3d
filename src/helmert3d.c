@@ -15,11 +15,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define VERS "1.0.0"
+#include "helmert3d.h"
 
 static size_t get_m_size(char *filename)
 {

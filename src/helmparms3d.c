@@ -15,12 +15,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "helmert3d.h"
 #include "svdm.h"
-#define VERS "1.0.0"
-#define DEBUG 0
 
 static void freematrix(size_t m, /*@only@*/ /*@out@*/ /*@null@*/ double ** u)
 {
