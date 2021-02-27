@@ -1,4 +1,4 @@
-/* Copyright (C) 2011 U. Niethammer,  http://helmparms3d.sourceforge.net/
+/* Copyright (C) 2020 U. Niethammer,  https://github.com/dr-ni/helmert3d
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     int stat=0;
 
     fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmdiff3d v%s       *\n",VERS);
+    fprintf(stdout,  "*      helmdiff3d v%s      *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
 

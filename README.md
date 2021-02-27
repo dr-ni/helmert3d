@@ -27,10 +27,10 @@ Seven parameters are required for this kind of transformation
 and can be calculated from a set of at least three point correspondences
 [Crosilla, F. (1999). Procrustes analysis and geodetic sciences. Technical report, Quo
 vadis geodesia...?, Department of Geodesy and GeoInformatics, University of Stuttgart].
-The tool helmparms3d reads two ASCII point-files and calculates all necessary
-parameters for Helmert transformation. All parameters are written to
-an ASCII file for further computations. The Helmert transformation can
-then be calculated with helmert3d.
+The tool helmparms3d reads two point-textfiles and calculates all necessary
+parameters for Helmert transformation. For further computations these parameters are stored in
+an additional textfile. The Helmert transformation can
+then be calculated with helmert3d. Finally the alignment can be tested with helmdiff3d.
 
 ## Development
 
@@ -58,7 +58,11 @@ helmparms3d [xyz_src_infilename] [xyz_dest_infilename] [parms_outfilename]
 
 Transformation:
 ```sh
-helmert3d [xyz_src_infilename] [param_infilename] [xyz_outfilename]
+helmert3d [xyz_src_infilename] [param_infilename] [xyz_transformed_outfilename]
+```
+Test:
+```sh
+helmdiff3d [xyz_dest_infilename] [xyz_transformed_infilename] [xyz_diff_outfilename]
 ```
 
 ## Files
