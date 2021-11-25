@@ -56,6 +56,7 @@ install:
 	$(INSTALL) -m 0644 LICENSE $(DOCS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
+	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_blh.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/GRS80.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
 	$(INSTALL) -m 0644 $(MANS)/helmert3d.1 $(PREFIX)/$(MANS)

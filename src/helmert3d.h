@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define VERS "1.0.2"
+#define VERS "1.0.3"
 #define DEBUG 0
 
 #endif // HELMERT3D_H

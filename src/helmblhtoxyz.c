@@ -50,64 +50,103 @@ static size_t get_m_size(char *filename)
 int main(int argc, char* argv[])
 {
     FILE *ifile;
+    FILE *cfile;
     FILE *ofile;
     char *ifilename = "";
-    char *ofilename = "out.xyz";
-    char ibuf[256], name[128];
-    double a = 6378137.0, b = 6356752.3142;
-    double bc, bs, lc, ls, ta, tb, nb, lt, bt, ht, xt, yt, zt;
-    size_t s = 0, i = 0;
+    char *cfilename = "";
+    char *ofilename = "out.txt";
+    char *command = "xyz";
+    char ibuf[256], cbuf[256], name[128];
+    double a = 6378137.0, b = 6356752.3142, ro, roi;
+    double a2, b2, bc, bs, lc, ls, ta, tb, nb, lt, bt, ht, xt, yt, zt;
+    double x2, y2, z2, r2, r, e2, et2, kf, kg, kc, ks, ks2, kp, kq, r0, re, re2, ku, kv, kz, z0;
+
+
+    size_t l = 0;
     int stat = 0;
 
-    fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmblhtoxyz v%s      *\n",VERS);
-    fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
-    fprintf(stdout,  "*******************************\n");
+    fprintf(stdout, "\n*******************************\n");
+    fprintf(stdout,   "*       blh2xyz v%s        *\n",VERS);
+    fprintf(stdout,   "*   (c) U. Niethammer 2020    *\n");
+    fprintf(stdout,   "*******************************\n");
 
-    if(argc < 2)
+    if(argc < 4)
     {
-        fprintf(stdout,"\nSyntax:  %s blh_src_infilename [xyz_dest_infilename]\n\n",argv[0]);
+        fprintf(stdout,"\nSyntax:  %s commands blh|xyz_src_infilename ellipsoid_src_infilename [blh|xyz_dest_infilename]\n\n",argv[0]);
+        fprintf(stdout,"commands:\n");
+        fprintf(stdout," xyz - convert B-L-H to X-Y-Z\n");
+        fprintf(stdout," blh - convert X-Y-Z to B-L-H\n\n");
+        fprintf(stdout,"ellipsoid file format:\n");
+        fprintf(stdout," Name a b\n\n");
         fprintf(stdout,"blh data file format:\n");
-        fprintf(stdout," Name a b\n B[1] L[1] H[1]\n ..   ..   ..\n ..   ..   ..\n B[n] L[n] H[n]\n\n");
+        fprintf(stdout," B[1] L[1] H[1]\n ..   ..   ..\n ..   ..   ..\n B[n] L[n] H[n]\n\n");
         fprintf(stdout,"xyz data file format:\n");
         fprintf(stdout," X[1] Y[1] Z[1]\n ..   ..   ..\n ..   ..   ..\n X[n] Y[n] Z[n]\n\n");
         exit(EXIT_FAILURE);
     }
+    command = argv[1];
+    if (!strcmp(command,"xyz")) 
+    {
+        fprintf(stdout,"B-L-H -> X-Y-Z...\n");
+    }
+    else if (!strcmp(command,"blh"))
+    {
+        fprintf(stdout,"X-Y-Z -> B-H-L...\n");
+    }
+    else
+    {
+        fprintf(stderr,"Unknow command %s\n",command);
+        exit(EXIT_FAILURE);
+    }
     fprintf(stdout,"Reading points...\n");
-    ifilename = argv[1];
-    s = get_m_size(ifilename) - 1;
-    fprintf(stdout,"Found %lu points\n",(unsigned long)s);
+    ifilename = argv[2];
+    l = get_m_size(ifilename);
+    fprintf(stdout,"Found %lu points\n",(unsigned long)l);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
         fprintf(stderr,"Error opening %s\n",ifilename);
         exit(EXIT_FAILURE);
     }
-    if(argc > 2)
+    cfilename = argv[3];
+    l = get_m_size(cfilename);
+    fprintf(stdout,"Found ellipsoid\n");
+    cfile = fopen( cfilename, "r");
+    if(cfile == NULL)
     {
-        ofilename = argv[2];
+        fprintf(stderr,"Error opening %s\n",cfilename);
+        exit(EXIT_FAILURE);
     }
-    ofile = fopen( ofilename, "w");
+    if(argc > 4)
+    {
+        ofilename = argv[4];
+        ofile = fopen( ofilename, "w");
+    }
+    else
+        ofile = stdout;
+    
     if(ofile == NULL)
     {
         fprintf(stderr,"Error writing %s\n",ofilename);
         exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout,"Starting calculate...\n");
-    while(fgets( ibuf, 128, ifile)!=NULL)
+    fprintf(stdout,"Starting calculation...\n");
+    fgets( cbuf, 256, cfile);
+    stat = sscanf( cbuf, "%s %lf %lf", name, &a, &b);
+    if(stat != 3)
     {
-        if (i == 0)
-        {
-            stat = sscanf( ibuf, "%s %lf %lf", &name, &a, &b);
-            if(stat != 3)
-            {
-                fprintf(stderr,"Error wrong data format in %s\n",ifilename);
-                exit(EXIT_FAILURE);
-            }
-            fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf\n", name, a, b);
-        }
-        else
+        fprintf(stderr,"Error wrong data format in %s\n",cfilename);
+        exit(EXIT_FAILURE);
+    }
+    fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf\n", name, a, b);
+    a2 = a * a;
+    b2 = b * b;
+    ro = M_PI / 180.0;
+    roi = 180.0 / M_PI;
+    if (!strcmp(command,"xyz")) 
+    {
+        while(fgets( ibuf, 256, ifile)!=NULL)
         {
             stat=sscanf( ibuf, "%lf %lf %lf", &bt, &lt, &ht);
             if(stat != 3)
@@ -115,22 +154,69 @@ int main(int argc, char* argv[])
                 fprintf(stderr,"Error wrong data format in %s\n",ifilename);
                 exit(EXIT_FAILURE);
             }
-            bc = cos(M_PI / 180.0 * bt);
-            bs = sin(M_PI / 180.0 * bt);
-            lc = cos(M_PI / 180.0 * lt);
-            ls = sin(M_PI / 180.0 * lt);
+            bc = cos(ro * bt);
+            bs = sin(ro * bt);
+            lc = cos(ro * lt);
+            ls = sin(ro * lt);
             ta = a * bc;
             tb = b * bs;
-            nb = (a * a) / sqrt(ta * ta + tb * tb);
+            nb = a2 / sqrt(ta * ta + tb * tb);
             xt = (nb + ht) * bc * lc;
             yt = (nb + ht) * bc * ls;
-            zt = (b * b / a / a * nb + ht) * bs;
+            zt = (b2 / a2 * nb + ht) * bs;
             fprintf(ofile,"%lf %lf %lf\n", xt , yt , zt);
         }
-        i++;
     }
-    fprintf(stdout,"...done\nResults written to %s\n", ofilename);
+    else if (!strcmp(command,"blh"))
+    {
+        while(fgets( ibuf, 256, ifile)!=NULL)
+        {
+            stat=sscanf( ibuf, "%lf %lf %lf", &xt, &yt, &zt);
+            if(stat != 3)
+            {
+                fprintf(stderr,"Error wrong data format in %s\n",ifilename);
+                exit(EXIT_FAILURE);
+            }
+            x2 = xt * xt;
+            y2 = yt * yt;
+            r2 = x2 + y2;
+            r = sqrt(r2);
+            e2 = 1.0 - b2 / a2;
+            et2 = (a2 - b2) / b2;
+            z2 = zt * zt;
+            kf = 54.0 * b2 * z2;
+            kg = r2 + (1 - e2) * z2 - e2 * (a2 - b2);
+            kc = e2 * e2 * kf * r2 / (kg * kg * kg);
+            ks = cbrt(1.0 + kc + sqrt(kc * kc + 2.0 * kc));
+            ks2 = ks + 1.0 / ks + 1.0;
+            kp = kf / (3.0 * ks2 * ks2 * kg * kg);
+            kq = sqrt(1.0 + 2.0 * e2 * e2 * kp);
+            r0 = -kp * e2 * r / (1.0 + kq) + sqrt(0.5 * a2 *(1.0 + 1.0 / kq) - kp * (1.0 - e2) * z2 / (kq * (1.0 + kq)) - 0.5 * kp * r2);
+            re = r - e2 * r0;
+            re2 = re * re;
+            ku = sqrt(re2 + z2);
+            kv = sqrt(re2 + (1.0 - e2) * z2);
+            kz = b2 / (a * kv);
+            z0 = kz * zt;
+            ht = ku * (1.0 - kz);
+            bt = roi * atan((zt + et2 * z0) / r);
+            lt = roi * atan2(yt, xt);
+            fprintf(ofile,"%3.8lf %3.8lf %lf\n", bt , lt , ht);
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Unknow command %s\n",command);
+        exit(EXIT_FAILURE);
+    }
+    if(argc > 4)
+    {
+        fprintf(stdout,"\nResults written to %s\n", ofilename);
+        (void)fclose(ofile);
+    }
     (void)fclose(ifile);
-    (void)fclose(ofile);
+    (void)fclose(cfile);
+
+    fprintf(stdout,"...done\n");
     return(0);
 }

@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 
     if(argc < 3)
     {
-        fprintf(stdout,"\nSyntax:  %s [xyz_src_infilename] [xyz_dest_infilename] [xyz_diff_outfilename]\n\n",argv[0]);
+        fprintf(stdout,"\nSyntax:  %s xyz_src_infilename xyz_dest_infilename [xyz_diff_outfilename]\n\n",argv[0]);
         fprintf(stdout,"xyz data file format:\n");
         fprintf(stdout," X[1] Y[1] Z[1]\n ..   ..   ..\n ..   ..   ..\n X[n] Y[n] Z[n]\n\n");
         exit(EXIT_FAILURE);
@@ -96,8 +96,10 @@ int main(int argc, char* argv[])
     if(argc > 3)
     {
         ofilename = argv[3];
+        ofile = fopen( ofilename, "w");
     }
-    ofile = fopen( ofilename, "w");
+    else
+        ofile = stdout;
     if(ofile == NULL)
     {
         fprintf(stderr,"Error writing %s\n",ofilename);
@@ -124,9 +126,14 @@ int main(int argc, char* argv[])
         zout=zs-zc;
         fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
     }
-    fprintf(stdout,"...done\nResults written to %s\n", ofilename);
+    if(argc > 3)
+    {
+        fprintf(stdout,"\nResults written to %s\n", ofilename);
+        (void)fclose(ofile);
+    }
     (void)fclose(ifile);
     (void)fclose(cfile);
-    (void)fclose(ofile);
+
+    fprintf(stdout,"...done\n");
     return(0);
 }

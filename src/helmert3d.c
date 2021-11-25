@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
     if(argc < 3)
     {
-        fprintf(stdout,"\nSyntax:  %s [xyz_src_infilename] [helmert_param_infilename] [xyz_dest_outfilename]\n\n",argv[0]);
+        fprintf(stdout,"\nSyntax:  %s xyz_src_infilename helmert_param_infilename [xyz_dest_outfilename]\n\n",argv[0]);
         fprintf(stdout,"helmert parameter file format:\n");
         fprintf(stdout," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
         fprintf(stdout,"xyz data file format:\n");
@@ -106,8 +106,10 @@ int main(int argc, char* argv[])
     if(argc > 3)
     {
         ofilename = argv[3];
+        ofile = fopen( ofilename, "w");
     }
-    ofile = fopen( ofilename, "w");
+    else
+        ofile = stdout;
     if(ofile == NULL)
     {
         fprintf(stderr,"Error writing %s\n",ofilename);
@@ -192,8 +194,6 @@ int main(int argc, char* argv[])
     fprintf(stdout,"%lf %lf %lf\n", tx , ty , tz);
     fprintf(stdout,"%lf\n", m);
 
-    fprintf(stdout,"...done\n");
-
     fprintf(stdout,"Starting transformation...\n");
     while(fgets( buf, 128, ifile)!=NULL)
     {
@@ -208,9 +208,14 @@ int main(int argc, char* argv[])
         zout=tz+m*(x*r31+y*r32+z*r33);
         fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
     }
-    fprintf(stdout,"...done\nResults written to %s\n", ofilename);
+    if(argc > 3)
+    {
+        fprintf(stdout,"\nResults written to %s\n", ofilename);
+        (void)fclose(ofile);
+    }
     (void)fclose(ifile);
     (void)fclose(parmfile);
-    (void)fclose(ofile);
+
+    fprintf(stdout,"...done\n");
     return(0);
 }

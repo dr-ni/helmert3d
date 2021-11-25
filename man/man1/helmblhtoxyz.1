@@ -1,19 +1,30 @@
-.TH "helmblhtoxyz" 1 1.0.2 "25 Nov 2021" "User Manual"
+.TH "helmblhtoxyz" 1 1.0.3 "26 Nov 2021" "User Manual"
 
 .SH NAME
 helmblhtoxyz
 
 .SH DESCRIPTION
-3D calculate from B-L-H to X-Y-Z for Helmert
+3D calculate from B-L-H to X-Y-Z for Helmert and back
 
 .SH SYNOPSIS
-helmblhtoxyz blh_src_infilename [xyz_diff_outfilename]
+helmblhtoxyz commands blh|xyz_src_infilename  ellipsoid_src_infilename [blh|xyz_diff_outfilename]
+
+.SH COMMANDS
+.TP
+xyz
+convert B-L-H to X-Y-Z
+.TP
+blh
+convert X-Y-Z to B-L-H
 
 .SH FILES
 .TP
-blh data file format:
+ellipsoid data file format:
 
  name a    b
+.TP
+blh data file format:
+
  B[1] L[1] H[1]
  ..   ..   ..
  ..   ..   ..
@@ -24,12 +35,14 @@ xyz data file format:
  X[1] Y[1] Z[1]
  ..   ..   ..
  ..   ..   ..
- H[n] Y[n] Z[n]
+ X[n] Y[n] Z[n]
 
 .SH EXAMPLE
  export EXAMP=/usr/share/doc/helmert3d/examples/
 
- helmblhtoxyz $EXAMP/GRS80.txt XYH.txt
+ helmblhtoxyz xyz $EXAMP/testpoints_blh.txt $EXAMP/GRS80.txt xyh.txt
+ helmblhtoxyz blh xyh.txt $EXAMP/GRS80.txt blh.txt
+ helmdiff3d examples/testpoints_blh.txt blh.txt
 
 .SH COPYRIGHT
 helmert3d:
@@ -57,4 +70,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 .SH CONTACT
  Website: https://github.com/dr-ni/helmert3d
-

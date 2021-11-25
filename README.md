@@ -91,10 +91,10 @@ Helmert parameter file format:
 
 XYZ data file format:
 ```
- x[1] y[1] z[1]
+ X[1] Y[1] Z[1]
  ..   ..   ..
  ..   ..   ..
- x[n] y[n] z[n]
+ X[n] Y[n] Z[n]
 ```
 
 ----

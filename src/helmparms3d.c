@@ -301,9 +301,9 @@ int main(int argc, char* argv[])
     fprintf(stdout,  "*      helmparms3d v%s     *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
-    if(argc < 4)
+    if(argc < 3)
     {
-        fprintf(stdout,"\nSyntax: %s [xyz_src_infilename] [xyz_dest_infilename] [helmert_param_outfilename]\n\n",argv[0]);
+        fprintf(stdout,"\nSyntax: %s xyz_src_infilename xyz_dest_infilename [helmert_param_outfilename]\n\n",argv[0]);
         fprintf(stderr,"helmert parameter file format:\n");
         fprintf(stderr," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
         fprintf(stderr,"xyz data file format:\n");
@@ -312,7 +312,6 @@ int main(int argc, char* argv[])
     }
     src_pts_name = argv[1];
     dest_pts_name = argv[2];
-    out_param_name = argv[3];
 
     m = get_m_size(src_pts_name);
     m2 = get_m_size(dest_pts_name);
@@ -462,7 +461,7 @@ int main(int argc, char* argv[])
 #endif
 
     scal=trace1/trace2;
-    ppm=scal-1.0;
+    ppm=(scal-1.0)*1000000.0;
 #if DEBUG
     fprintf(stdout,"\nscal = %10.10lf\nscal = %10.10lf ppm\n\n",scal, ppm);
 #endif
@@ -510,31 +509,45 @@ int main(int argc, char* argv[])
     print_vector(stdout, 3, T_vec);
 #endif
 
-    outfile = fopen(out_param_name, "w");
+    if(argc > 3)
+    {
+        out_param_name = argv[3];
+        outfile = fopen(out_param_name, "w");
+    }
+    else
+        outfile = stdout;
     if(outfile == NULL)
     {
         fprintf(stderr,"Error writing %s\n",out_param_name);
         exit(EXIT_FAILURE);
     }
+    
     init_matrix(m,m,src_mat_T);
     transpose_matrix(m, m, R_mat, src_mat_T);
-    print_matrix(outfile, n, n, src_mat_T);
     fprintf(stdout,"R =\n");
 
     print_matrix(stdout, n, n, src_mat_T);
     fprintf(stdout,"\n");
 
-    print_vector(outfile, 3, T_vec);
     fprintf(stdout,"T =\n");
 
     print_vector(stdout, 3, T_vec);
     fprintf(stdout,"\n");
 
-    fprintf(outfile, "%10.10lf\n", scal);
     fprintf(stdout,"s = %10.10lf (= %10.10lf ppm)\n\n",scal, ppm);
 
-    (void)fclose(outfile);
-
+    if(argc < 4)
+    {
+        fprintf(stdout,"Results matrix:\n");
+    }
+    print_matrix(outfile, n, n, src_mat_T);
+    print_vector(outfile, 3, T_vec);
+    fprintf(outfile, "%10.10lf\n", scal);
+    if(argc > 3)
+    {
+        fprintf(stdout,"Results written to %s\n", out_param_name);
+        (void)fclose(outfile);
+    }
     freevector(D_vec);
     freevector(T_vec);
     freevector(one_vec);
@@ -552,6 +565,7 @@ int main(int argc, char* argv[])
     freematrix(m, C_mat_interm);
     freematrix(m, src_mat_T);
     freematrix(m, D_mat_interm);
+
     fprintf(stdout,"...done\n");
     return(0);
 }
