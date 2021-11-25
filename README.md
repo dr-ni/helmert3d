@@ -1,3 +1,16 @@
+`Origin :`
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dr-ni/helmert3d)
+![GitHub Release Date](https://img.shields.io/github/release-date/dr-ni/helmert3d)
+![GitHub repo size](https://img.shields.io/github/repo-size/dr-ni/helmert3d)
+![GitHub all releases](https://img.shields.io/github/downloads/dr-ni/helmert3d/total)
+![GitHub](https://img.shields.io/github/license/dr-ni/helmert3d)  
+`GLC.ORG:`
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Geo-Linux-Calculations/helmparms3d)
+![GitHub Release Date](https://img.shields.io/github/release-date/Geo-Linux-Calculations/helmparms3d)
+![GitHub repo size](https://img.shields.io/github/repo-size/Geo-Linux-Calculations/helmparms3d)
+![GitHub all releases](https://img.shields.io/github/downloads/Geo-Linux-Calculations/helmparms3d/total)
+![GitHub](https://img.shields.io/github/license/Geo-Linux-Calculations/helmparms3d)  
+
 # helmert3d
 
 ## About

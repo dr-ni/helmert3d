@@ -307,7 +307,7 @@ int main(int argc, char* argv[])
         fprintf(stderr,"helmert parameter file format:\n");
         fprintf(stderr," r11 r12 r13\n r21 r22 r23\n r31 r32 r33\n tx ty tz\n s\n\n");
         fprintf(stderr,"xyz data file format:\n");
-        fprintf(stderr," x[1] y[1] z[1]\n ..   ..   ..\n ..   ..   ..\n x[n] y[n] z[n]\n\n");
+        fprintf(stderr," X[1] Y[1] Z[1]\n ..   ..   ..\n ..   ..   ..\n X[n] Y[n] Z[n]\n\n");
         exit(EXIT_FAILURE);
     }
     src_pts_name = argv[1];
