@@ -50,52 +50,42 @@ static size_t get_m_size(char *filename)
 int main(int argc, char* argv[])
 {
     FILE *ifile;
-    FILE *cfile;
     FILE *ofile;
     char *ifilename = "";
-    char *cfilename = "";
-    char *ofilename = "diff.xyz";
-    char ibuf[256], cbuf[256];
-    double xs=0.0, ys=0.0, zs=0.0;
-    double xc=0.0, yc=0.0, zc=0.0;
-    double xout=0.0, yout=0.0, zout=0.0;
-    size_t l=0;
-    int stat=0;
+    char *ofilename = "out.xyz";
+    char ibuf[256], name[128];
+    double a = 6378137.0, b = 6356752.3142;
+    double bc, bs, lc, ls, ta, tb, nb, lt, bt, ht, xt, yt, zt;
+    size_t s = 0, i = 0;
+    int stat = 0;
 
     fprintf(stdout,"\n*******************************\n");
-    fprintf(stdout,  "*      helmdiff3d v%s      *\n",VERS);
+    fprintf(stdout,  "*      helmblhtoxyz v%s      *\n",VERS);
     fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
     fprintf(stdout,  "*******************************\n");
 
-    if(argc < 3)
+    if(argc < 2)
     {
-        fprintf(stdout,"\nSyntax:  %s [xyz_src_infilename] [xyz_dest_infilename] [xyz_diff_outfilename]\n\n",argv[0]);
+        fprintf(stdout,"\nSyntax:  %s blh_src_infilename [xyz_dest_infilename]\n\n",argv[0]);
+        fprintf(stdout,"blh data file format:\n");
+        fprintf(stdout," Name a b\n B[1] L[1] H[1]\n ..   ..   ..\n ..   ..   ..\n B[n] L[n] H[n]\n\n");
         fprintf(stdout,"xyz data file format:\n");
         fprintf(stdout," X[1] Y[1] Z[1]\n ..   ..   ..\n ..   ..   ..\n X[n] Y[n] Z[n]\n\n");
         exit(EXIT_FAILURE);
     }
     fprintf(stdout,"Reading points...\n");
     ifilename = argv[1];
-    l = get_m_size(ifilename);
-    fprintf(stdout,"Found %lu points\n",(unsigned long)l);
+    s = get_m_size(ifilename) - 1;
+    fprintf(stdout,"Found %lu points\n",(unsigned long)s);
     ifile = fopen( ifilename, "r");
     if(ifile == NULL)
     {
         fprintf(stderr,"Error opening %s\n",ifilename);
         exit(EXIT_FAILURE);
     }
-    cfilename = argv[2];
-    l = get_m_size(cfilename);
-    fprintf(stdout,"Found %lu points\n",(unsigned long)l);
-    cfile = fopen( cfilename, "r");
-    if(cfile == NULL)
+    if(argc > 2)
     {
-        fprintf(stderr,"Error opening %s\n",cfilename);
-        exit(EXIT_FAILURE);
-    }
-    if(argc > 3)
-    {
-        ofilename = argv[3];
+        ofilename = argv[2];
     }
     ofile = fopen( ofilename, "w");
     if(ofile == NULL)
@@ -104,29 +94,43 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    fprintf(stdout,"Starting diff...\n");
-    while(fgets( ibuf, 128, ifile)!=NULL && fgets( cbuf, 128, cfile)!=NULL)
+    fprintf(stdout,"Starting calculate...\n");
+    while(fgets( ibuf, 128, ifile)!=NULL)
     {
-        stat=sscanf( ibuf, "%lf %lf %lf", &xs, &ys, &zs);
-        if(stat != 3)
+        if (i == 0)
         {
-            fprintf(stderr,"Error wrong data format in %s\n",ifilename);
-            exit(EXIT_FAILURE);
+            stat = sscanf( ibuf, "%s %lf %lf", &name, &a, &b);
+            if(stat != 3)
+            {
+                fprintf(stderr,"Error wrong data format in %s\n",ifilename);
+                exit(EXIT_FAILURE);
+            }
+            fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf\n", name, a, b);
         }
-        stat=sscanf( cbuf, "%lf %lf %lf", &xc, &yc, &zc);
-        if(stat != 3)
+        else
         {
-            fprintf(stderr,"Error wrong data format in %s\n",cfilename);
-            exit(EXIT_FAILURE);
+            stat=sscanf( ibuf, "%lf %lf %lf", &bt, &lt, &ht);
+            if(stat != 3)
+            {
+                fprintf(stderr,"Error wrong data format in %s\n",ifilename);
+                exit(EXIT_FAILURE);
+            }
+            bc = cos(M_PI / 180.0 * bt);
+            bs = sin(M_PI / 180.0 * bt);
+            lc = cos(M_PI / 180.0 * lt);
+            ls = sin(M_PI / 180.0 * lt);
+            ta = a * bc;
+            tb = b * bs;
+            nb = (a * a) / sqrt(ta * ta + tb * tb);
+            xt = (nb + ht) * bc * lc;
+            yt = (nb + ht) * bc * ls;
+            zt = (b * b / a / a * nb + ht) * bs;
+            fprintf(ofile,"%lf %lf %lf\n", xt , yt , zt);
         }
-        xout=xs-xc;
-        yout=ys-yc;
-        zout=zs-zc;
-        fprintf(ofile,"%lf %lf %lf\n", xout , yout , zout);
+        i++;
     }
     fprintf(stdout,"...done\nResults written to %s\n", ofilename);
     (void)fclose(ifile);
-    (void)fclose(cfile);
     (void)fclose(ofile);
     return(0);
 }

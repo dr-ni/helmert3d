@@ -1,45 +1,35 @@
-.TH "helmert3d" 1 1.0.2 "25 Nov 2021" "User Manual"
+.TH "helmblhtoxyz" 1 1.0.2 "25 Nov 2021" "User Manual"
 
 .SH NAME
-helmert3d
+helmblhtoxyz
 
 .SH DESCRIPTION
-3D Helmert transformation Tool
-
-The 3D Helmert transformation (Xt=T+sRX) is a frequently used method in geodesy to produce transformations between different Cartesian coordinate systems.
-.TP
-where
- Xt = transformed coordinate vector
- X = initial coordinate vector
- T = translation vector
- R = rotation matrix including rx, ry, rz
- rx, ry, rz = rotations around the coordinate axes
- s = scale factor
+3D calculate from B-L-H to X-Y-Z for Helmert
 
 .SH SYNOPSIS
-helmert3d [xyz_src_infilename] [param_infilename] [xyz_outfilename]
+helmblhtoxyz blh_src_infilename [xyz_diff_outfilename]
 
 .SH FILES
+.TP
+blh data file format:
+
+ name a    b
+ B[1] L[1] H[1]
+ ..   ..   ..
+ ..   ..   ..
+ B[n] L[n] H[n]
 .TP
 xyz data file format:
 
  X[1] Y[1] Z[1]
  ..   ..   ..
  ..   ..   ..
- X[n] Y[n] Z[n]
-.TP
-helmert parameter file format:
-
- r11 r12 r13
- r21 r22 r23
- r31 r32 r33
- tx ty tz
- s
+ H[n] Y[n] Z[n]
 
 .SH EXAMPLE
-export EXAMP=/usr/share/doc/helmert3d/examples/
+ export EXAMP=/usr/share/doc/helmert3d/examples/
 
-helmert3d $EXAMP/testpoints_src.txt testparms.txt
+ helmblhtoxyz $EXAMP/GRS80.txt XYH.txt
 
 .SH COPYRIGHT
 helmert3d:
@@ -62,8 +52,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 .SH SEE ALSO
  helmparms3d(1),
- helmdiff3d(1),
- helmblhtoxyz(1)
+ helmert3d(1),
+ helmdiff3d(1)
 
 .SH CONTACT
  Website: https://github.com/dr-ni/helmert3d

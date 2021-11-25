@@ -21,7 +21,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define VERS "1.0.1"
+#include <math.h>
+#define VERS "1.0.2"
 #define DEBUG 0
 
 #endif // HELMERT3D_H
