@@ -10,6 +10,7 @@ SRCS=src
 DOCS=/usr/share/doc/helmert3d
 BINS=bin
 EXAMPS=examples
+ELLIPS=ellipsoids
 MANS=man/man1
 
 all: helmert3d helmparms3d helmdiff3d helmblhtoxyz
@@ -48,6 +49,7 @@ install:
 	$(INSTALL) -d $(PREFIX)/$(BINS)
 	$(INSTALL) -d $(PREFIX)/$(MANS)
 	$(INSTALL) -d $(DOCS)/$(EXAMPS)
+	$(INSTALL) -d $(DOCS)/$(ELLIPS)
 	$(INSTALL) -m 0755 helmparms3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0755 helmert3d $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0755 helmdiff3d $(PREFIX)/$(BINS)
@@ -57,7 +59,12 @@ install:
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_blh.txt $(DOCS)/$(EXAMPS)
-	$(INSTALL) -m 0644 $(EXAMPS)/GRS80.txt $(DOCS)/$(EXAMPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/BESSEL.txt $(DOCS)/$(ELLIPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/GRS80.txt $(DOCS)/$(ELLIPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/GSK2011.txt $(DOCS)/$(ELLIPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/KRASOVSKIY.txt $(DOCS)/$(ELLIPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/PZ90.txt $(DOCS)/$(ELLIPS)
+	$(INSTALL) -m 0644 $(ELLIPS)/WGS84.txt $(DOCS)/$(ELLIPS)
 	$(INSTALL) -m 0644 $(MANS)/helmparms3d.1 $(PREFIX)/$(MANS)
 	$(INSTALL) -m 0644 $(MANS)/helmert3d.1 $(PREFIX)/$(MANS)
 	$(INSTALL) -m 0644 $(MANS)/helmdiff3d.1 $(PREFIX)/$(MANS)

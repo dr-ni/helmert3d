@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
     }
     else if (!strcmp(command,"blh"))
     {
-        fprintf(stdout,"X-Y-Z -> B-H-L...\n");
+        fprintf(stdout,"X-Y-Z -> B-L-H...\n");
     }
     else
     {
