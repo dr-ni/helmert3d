@@ -299,7 +299,7 @@ int main(int argc, char* argv[])
 
     fprintf(stdout,"\n*******************************\n");
     fprintf(stdout,  "*      helmparms3d v%s     *\n",VERS);
-    fprintf(stdout,  "*   (c) U. Niethammer 2020    *\n");
+    fprintf(stdout,  "*   (c) %s %s    *\n",C_AUTHOR,C_YEAR);
     fprintf(stdout,  "*******************************\n");
     if(argc < 3)
     {

@@ -1,13 +1,13 @@
-.TH "helmblhtoxyz" 1 1.0.3 "26 Nov 2021" "User Manual"
+.TH "helmeltrans" 1 1.0.4 "27 Nov 2021" "User Manual"
 
 .SH NAME
-helmblhtoxyz
+helmeltrans
 
 .SH DESCRIPTION
-3D calculate from B-L-H to X-Y-Z for Helmert and back
+Ellipsoid Transformation Coordinates B-L-H <-> X-Y-Z for Helmert
 
 .SH SYNOPSIS
-helmblhtoxyz commands blh|xyz_src_infilename  ellipsoid_src_infilename [blh|xyz_diff_outfilename]
+helmeltrans commands blh|xyz_src_infilename  ellipsoid_src_infilename [blh|xyz_diff_outfilename]
 
 .SH COMMANDS
 .TP
@@ -41,8 +41,8 @@ xyz data file format:
  export EXAMP=/usr/share/doc/helmert3d/examples/
  export ELLIPS=/usr/share/doc/helmert3d/ellipsoids/
 
- helmblhtoxyz xyz $EXAMP/testpoints_blh.txt $ELLIPS/GRS80.txt xyh.txt
- helmblhtoxyz blh xyh.txt $ELLIPS/GRS80.txt blh.txt
+ helmeltrans xyz $EXAMP/testpoints_blh.txt $ELLIPS/GRS80.txt xyh.txt
+ helmeltrans blh xyh.txt $ELLIPS/GRS80.txt blh.txt
  helmdiff3d examples/testpoints_blh.txt blh.txt
 
 .SH COPYRIGHT

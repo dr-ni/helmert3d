@@ -22,7 +22,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define VERS "1.0.3"
+#define VERS "1.0.4"
+#define C_AUTHOR "U. Niethammer"
+#define C_YEAR "2021"
 #define DEBUG 0
 
 #endif // HELMERT3D_H

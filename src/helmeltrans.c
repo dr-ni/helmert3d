@@ -66,8 +66,8 @@ int main(int argc, char* argv[])
     int stat = 0;
 
     fprintf(stdout, "\n*******************************\n");
-    fprintf(stdout,   "*       blh2xyz v%s        *\n",VERS);
-    fprintf(stdout,   "*   (c) U. Niethammer 2020    *\n");
+    fprintf(stdout,   "*     helmeltrans v%s      *\n",VERS);
+    fprintf(stdout,   "*   (c) %s %s    *\n",C_AUTHOR,C_YEAR);
     fprintf(stdout,   "*******************************\n");
 
     if(argc < 4)
