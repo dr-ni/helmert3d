@@ -56,6 +56,7 @@ install:
 	$(INSTALL) -m 0755 helmeltrans $(PREFIX)/$(BINS)
 	$(INSTALL) -m 0644 README.md $(DOCS)
 	$(INSTALL) -m 0644 LICENSE $(DOCS)
+	$(INSTALL) -m 0644 common_ellipsoids.txt $(DOCS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_src.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_dest.txt $(DOCS)/$(EXAMPS)
 	$(INSTALL) -m 0644 $(EXAMPS)/testpoints_blh.txt $(DOCS)/$(EXAMPS)

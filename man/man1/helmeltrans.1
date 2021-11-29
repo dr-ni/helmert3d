@@ -4,12 +4,15 @@
 helmeltrans
 
 .SH DESCRIPTION
-Ellipsoid Transformation Coordinates B-L-H <-> X-Y-Z for Helmert
+3D Ellipsoidal Coordinate Transformation Tool
+
+With this tool transformation between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed.
+The ellipsoid name, as well as both axes of the ellipsoid must be predefined in a seperate textfile (ellipsoid_infile).
 
 .SH SYNOPSIS
-helmeltrans commands blh|xyz_src_infilename  ellipsoid_src_infilename [blh|xyz_diff_outfilename]
+helmeltrans [blh|xyz] src_infilename ellipsoid_infilename outfilename
 
-.SH COMMANDS
+.SH DIRECTION
 .TP
 xyz
 convert B-L-H to X-Y-Z
@@ -21,7 +24,7 @@ convert X-Y-Z to B-L-H
 .TP
 ellipsoid data file format:
 
- name a    b
+ name a b
 .TP
 blh data file format:
 

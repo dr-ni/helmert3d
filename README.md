@@ -16,7 +16,7 @@
 ## About
 
 The 3D Helmert transformation is a frequently used method in geodesy
-to produce transformations between different Cartesian coordinate systems:
+to produce transformations between different cartesian coordinate systems:
 ```
 Xt=T+sRX
 ```
@@ -40,10 +40,13 @@ Seven parameters are required for this kind of transformation
 and can be calculated from a set of at least three point correspondences
 [Crosilla, F. (1999). Procrustes analysis and geodetic sciences. Technical report, Quo
 vadis geodesia...?, Department of Geodesy and GeoInformatics, University of Stuttgart].
-The tool helmparms3d reads two point-textfiles and calculates all necessary
+
+All coordinates must be translated to XYZ coordinates, first, if the coordinate system is not cartesian.
+Transformations between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed with the tool helmeltrans. The ellipsoid name, as well as both axes of the ellipsoid must be predefined in a seperate textfile (ellipsoid_infile).
+
+The tool helmparms3d reads two XYZ point-textfiles and calculates all necessary
 parameters for Helmert transformation. For further computations these parameters are stored in
-an additional textfile. The Helmert transformation can
-then be calculated with helmert3d. Finally the alignment can be tested with helmdiff3d.
+an additional textfile. The Helmert transformation can then be calculated with helmert3d. Finally the alignment can be tested with helmdiff3d.
 
 ## Development
 
@@ -73,6 +76,12 @@ Transformation:
 ```sh
 helmert3d [xyz_src_infilename] [param_infilename] [xyz_transformed_outfilename]
 ```
+
+Coordinate system translatation:
+```sh
+helmeltrans [blh|xyz] src_infilename  ellipsoid_infilename outfilename]
+```
+
 Test:
 ```sh
 helmdiff3d [xyz_dest_infilename] [xyz_transformed_infilename] [xyz_diff_outfilename]
@@ -96,6 +105,21 @@ XYZ data file format:
  ..   ..   ..
  X[n] Y[n] Z[n]
 ```
+
+BLH data file format:
+```
+ B[1] L[1] H[1]
+ ..   ..   ..
+ ..   ..   ..
+ B[n] L[n] H[n]
+```
+
+Ellipsoid data file format:
+```
+ name a b
+```
+
+See ellipsoids : [Common Ellipsoids](./common_ellipsoids.txt)
 
 ----
 

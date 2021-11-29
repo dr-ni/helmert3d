@@ -6,7 +6,8 @@ helmert3d
 .SH DESCRIPTION
 3D Helmert transformation Tool
 
-The 3D Helmert transformation (Xt=T+sRX) is a frequently used method in geodesy to produce transformations between different Cartesian coordinate systems.
+The 3D Helmert transformation (Xt=T+sRX) is a frequently used method in geodesy to produce transformations between different Cartesian coordinate systems. All coordinates must be translated to XYZ coordinates, first, if the coordinate system is not cartesian. Transformations between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed with the tool helmeltrans.
+
 .TP
 where
  Xt = transformed coordinate vector
