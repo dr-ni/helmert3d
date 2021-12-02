@@ -65,23 +65,22 @@ static double * vector(size_t m, /*@null@*/double * u)
     return u;
 }
 
-static void print_vector(FILE *target, size_t dim,double *vector)
+static void vector_print(FILE *target, size_t n,double *vector)
 {
-    size_t count;
-    for(count=0; count<dim; count++)
+    size_t i=0;
+    for(i=0; i<n; i++)
     {
-        fprintf(target, "%10.10lf ",vector[count]);
+        fprintf(target, "%10.10lf ",vector[i]);
     }
     fprintf(target, "\n");
 }
 
-static void print_matrix(FILE *target, size_t b,size_t h,double **matrix_a)
+static void matrix_print(FILE *target, size_t n,size_t m,double **matrix_a)
 {
-    size_t i=0;
-    size_t j=0;
-    for(i=0; i<b; i++)
+    size_t i=0, j=0;
+    for(i=0; i<n; i++)
     {
-        for(j=0; j<h; j++)
+        for(j=0; j<m; j++)
         {
             fprintf(target, "%10.10lf ", matrix_a[i][j]);
         }
@@ -90,35 +89,29 @@ static void print_matrix(FILE *target, size_t b,size_t h,double **matrix_a)
 }
 
 //Matrix mit Vektor multiplizieren
-static void matrix_multiply(size_t h,size_t b,double ** matrix,double *invector,double *outvector)
+static void matrix_multiply(size_t n,size_t m,double ** matrix,double *invector,double *outvector)
 {
-    size_t count;
-    size_t count1;
-    for(count=0; count<h; count++)outvector[count]=0.0;
-    for(count=0; count<h; count++)
+    size_t i=0, j=0;
+    for(i=0; i<n; i++)
     {
-        for(count1=0; count1<b; count1++)
+        outvector[i]=0.0;
+        for(j=0; j<m; j++)
         {
-            outvector[count]+=matrix[count][count1]*invector[count1];
+            outvector[i]+=matrix[i][j]*invector[j];
         }
     }
 }
 
-static void matmult(double **mat1, size_t m1, size_t n1, double **mat2, /*@unused@*/size_t m2, size_t n2, double **mat3, /*@unused@*/size_t m3, /*@unused@*/size_t n3)
+static void matmult(size_t n, size_t m, size_t m2, double **mat1, double **mat2, double **mat3)
 {
     size_t i=0, j=0, k=0;
     double sum=0.0;
-    if (m1 != n2)
+    for(i=0; i<n; i++)
     {
-        fprintf(stderr,"Matrix m1 cannot be multiplied to m2.\n");
-        exit(EXIT_FAILURE);
-    }
-    for(i=0; i<m1; i++)
-    {
-        for(j=0; j<n1; j++)
+        for(j=0; j<m2; j++)
         {
             sum=0.0;
-            for(k=0; k<n1; k++)
+            for(k=0; k<m; k++)
             {
                 sum+=mat1[i][k]*mat2[k][j];
             }
@@ -127,19 +120,19 @@ static void matmult(double **mat1, size_t m1, size_t n1, double **mat2, /*@unuse
     }
 }
 
-static void transpose_matrix(size_t n, size_t m, double **src_matrix, double **dest_matrix)
+static void matrix_transpose(size_t n, size_t m, double **src_matrix, double **dest_matrix)
 {
     size_t i=0, j=0;
     for(i = 0; i < n; i++)
     {
         for(j = 0; j < m; j++)
         {
-            dest_matrix[i][j]=src_matrix[j][i];
+            dest_matrix[j][i]=src_matrix[i][j];
         }
     }
 }
 
-static void init_matrix(size_t n, size_t m, double **matrix)
+static void matrix_init(size_t n, size_t m, double **matrix)
 {
     size_t i=0, j=0;
     for(i = 0; i < n; i++)
@@ -151,7 +144,7 @@ static void init_matrix(size_t n, size_t m, double **matrix)
     }
 }
 
-static void copy_matrix(size_t n, size_t m, double **src_matrix, double **dest_matrix)
+static void matrix_copy(size_t n, size_t m, double **src_matrix, double **dest_matrix)
 {
     size_t i=0, j=0;
     for(i = 0; i < n; i++)
@@ -163,7 +156,7 @@ static void copy_matrix(size_t n, size_t m, double **src_matrix, double **dest_m
     }
 }
 
-static void scal_matrix(size_t n, size_t m, double scal, double **src_matrix, double **dest_matrix)
+static void matrix_scal(size_t n, size_t m, double scal, double **src_matrix, double **dest_matrix)
 {
     size_t i=0, j=0;
     for(i = 0; i < n; i++)
@@ -175,7 +168,7 @@ static void scal_matrix(size_t n, size_t m, double scal, double **src_matrix, do
     }
 }
 
-static void subtract_matrix(size_t n, size_t m, double **mat1, double **mat2, double **mat3)
+static void matrix_subtract(size_t n, size_t m, double **mat1, double **mat2, double **mat3)
 {
     size_t i=0, j=0;
     for(i = 0; i < n; i++)
@@ -264,7 +257,7 @@ static void read_points(char *filename, double **pts_mat)
         linecount++;
     }
     printf("%s:\n", filename);
-    print_matrix(stdout, linecount, 3, pts_mat);
+    matrix_print(stdout, linecount, 3, pts_mat);
     fprintf(stdout,"\n");
     (void)fclose(ptsfile);
 }
@@ -327,8 +320,8 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    src_mat = matrix(m, m, src_mat);
-    dest_mat = matrix(m, m, dest_mat);
+    src_mat = matrix(m, n, src_mat);
+    dest_mat = matrix(m, n, dest_mat);
 
     read_points(src_pts_name, src_mat);
     read_points(dest_pts_name, dest_mat);
@@ -336,21 +329,21 @@ int main(int argc, char* argv[])
     D_vec=vector(n, D_vec);
 
     E_mat=matrix(m, m, E_mat);
-    P_mat=matrix(m, m, P_mat);
-    D_mat=matrix(m, m, D_mat);
-    Q_mat=matrix(m, m, Q_mat);
-    P_mat_T=matrix(m, m, P_mat_T);
-    R_mat=matrix(m, m, R_mat);
-    dest_mat_T=matrix(m, m, dest_mat_T);
-    C_mat=matrix(m, m, C_mat);
+    P_mat=matrix(n, n, P_mat);
+    D_mat=matrix(n, n, D_mat);
+    Q_mat=matrix(n, n, Q_mat);
+    P_mat_T=matrix(n, n, P_mat_T);
+    R_mat=matrix(n, n, R_mat);
+    dest_mat_T=matrix(n, m, dest_mat_T);
+    C_mat=matrix(n, n, C_mat);
     C_mat_interm=matrix(m, m, C_mat_interm);
-    src_mat_T=matrix(m, m, src_mat_T);
+    src_mat_T=matrix(n, m, src_mat_T);
     D_mat_interm=matrix(m, m, D_mat_interm);
 
-    transpose_matrix(m, m, dest_mat, dest_mat_T);
+    matrix_transpose(m, n, dest_mat, dest_mat_T);
 #if DEBUG
     fprintf(stdout,"%s_T:\n",dest_pts_name);
-    print_matrix(stdout,  n, m, dest_mat_T);
+    matrix_print(stdout, n, m, dest_mat_T);
 #endif
 
     for(k=0; k<m; k++)
@@ -369,41 +362,41 @@ int main(int argc, char* argv[])
     }
 #if DEBUG
     fprintf(stdout,"E:\n");
-    print_matrix(stdout,  m, m, E_mat);
+    matrix_print(stdout, m, m, E_mat);
 
     fprintf(stdout,"dest_mat_T:\n");
-    print_matrix(stdout,  n, m, dest_mat_T);
+    matrix_print(stdout, n, m, dest_mat_T);
 #endif
 
-    matmult(dest_mat_T, m, m, E_mat, m, m,  C_mat_interm, m, n);
+    matmult(n, m, m, dest_mat_T, E_mat, C_mat_interm);
 #if DEBUG
     fprintf(stdout,"C_interm:\n");
-    print_matrix(stdout,  n, m, C_mat_interm);
+    matrix_print(stdout, n, m, C_mat_interm);
 #endif
 
-    matmult(C_mat_interm, n, m, src_mat, m, n,  C_mat, n, n);
+    matmult(n, m, n, C_mat_interm, src_mat, C_mat);
 #if DEBUG
     fprintf(stdout,"C:\n");
-    print_matrix(stdout,  n, n, C_mat);
+    matrix_print(stdout, n, n, C_mat);
 #endif
 
-    copy_matrix(n,n,C_mat,P_mat);
+    matrix_copy(n, n, C_mat, P_mat);
 #if DEBUG
     fprintf(stdout,"P:\n");
-    print_matrix(stdout,  n, n, P_mat);
+    matrix_print(stdout, n, n, P_mat);
 #endif
 
     //Given matrix C[m][n], m>=n, using svd decomposition C = P D Q' to get P[m][n], diag D[n] and Q[n][n].
     svd((long long) n, (long long)n, C_mat, P_mat, D_vec, Q_mat);
-    transpose_matrix(n, n, P_mat, P_mat_T);
+    matrix_transpose(n, n, P_mat, P_mat_T);
 #if DEBUG
     fprintf(stdout,"P\n");
-    print_matrix(stdout,  n, n, P_mat);
+    matrix_print(stdout, n, n, P_mat);
     fprintf(stdout,"P_T\n");
-    print_matrix(stdout,  n, n, P_mat_T);
+    matrix_print(stdout, n, n, P_mat_T);
 
     fprintf(stdout,"D_vec\n");
-    print_vector(stdout,  n, D_vec);
+    vector_print(stdout, n, D_vec);
 #endif
     for(k=0; k<n; k++)
     {
@@ -416,46 +409,46 @@ int main(int argc, char* argv[])
     }
 #if DEBUG
     fprintf(stdout,"D\n");
-    print_matrix(stdout,  n, n, D_mat);
+    matrix_print(stdout, n, n, D_mat);
 #endif
 
-    matmult(Q_mat, n, n, P_mat_T, n, n,  R_mat, n, n);
+    matmult(n, n, n, Q_mat, P_mat_T, R_mat);
 #if DEBUG
     fprintf(stdout,"R_trans:\n");
-    print_matrix(stdout, n, n, R_mat);
+    matrix_print(stdout, n, n, R_mat);
 #endif
 
-    matmult(C_mat, m, n, R_mat, n, m,  C_mat_interm, m, n);
+    matmult(n, n, n, C_mat, R_mat, C_mat_interm);
 #if DEBUG
     fprintf(stdout,"C_interm:\n");
-    print_matrix(stdout,  n, n, C_mat_interm);
+    matrix_print(stdout, n, n, C_mat_interm);
 #endif
-    trace1=trace(n,n,C_mat_interm);
+    trace1=trace(n, n, C_mat_interm);
 #if DEBUG
     fprintf(stdout,"\ntra=%lf\n\n",trace1);
 #endif
 
-    transpose_matrix(m, m, src_mat, src_mat_T);
+    matrix_transpose(m, n, src_mat, src_mat_T);
 #if DEBUG
     fprintf(stdout,"%s_T:\n",src_pts_name);
-    print_matrix(stdout,  n, m, src_mat_T);
+    matrix_print(stdout, n, m, src_mat_T);
 #endif
 
-    init_matrix(m,m,C_mat);
-    init_matrix(m,m,C_mat_interm);
-    matmult(src_mat_T, m, m, E_mat, m, m,  C_mat_interm, n, n);
+    matrix_init(n, n, C_mat);
+    matrix_init(m, m, C_mat_interm);
+    matmult(n, m, m, src_mat_T, E_mat, C_mat_interm);
 #if DEBUG
     fprintf(stdout,"C_interm:\n");
-    print_matrix(stdout,  n, m, C_mat_interm);
+    matrix_print(stdout, n, m, C_mat_interm);
 #endif
 
-    matmult(C_mat_interm, n, m, src_mat, m, n,  C_mat, n, n);
+    matmult(n, m, n, C_mat_interm, src_mat, C_mat);
 #if DEBUG
     fprintf(stdout,"C:\n");
-    print_matrix(stdout,  n, n, C_mat);
+    matrix_print(stdout, n, n, C_mat);
 #endif
 
-    trace2=trace(n,n,C_mat);
+    trace2=trace(n, n, C_mat);
 #if DEBUG
     fprintf(stdout,"\ntra=%lf\n\n",trace2);
 #endif
@@ -466,35 +459,35 @@ int main(int argc, char* argv[])
     fprintf(stdout,"\nscal = %10.10lf\nscal = %10.10lf ppm\n\n",scal, ppm);
 #endif
 
-    init_matrix(m,m,C_mat);
-    init_matrix(m,m,C_mat_interm);
+    matrix_init(n, n, C_mat);
+    matrix_init(m, m, C_mat_interm);
 
-    matmult(src_mat, m, n, R_mat, n,m,  D_mat_interm, m, n);
+    matmult(m, n, n, src_mat, R_mat, D_mat_interm);
 #if DEBUG
     fprintf(stdout,"C_mat_interm:\n");
-    print_matrix(stdout,  m, n, D_mat_interm);
+    matrix_print(stdout, m, n, D_mat_interm);
 #endif
 
-    scal_matrix(m, n, scal, D_mat_interm, C_mat_interm);
+    matrix_scal(m, n, scal, D_mat_interm, C_mat_interm);
 #if DEBUG
     fprintf(stdout,"C_mat_interm:\n");
-    print_matrix(stdout,  m, n, C_mat_interm);
+    matrix_print(stdout, m, n, C_mat_interm);
 #endif
 
-    subtract_matrix(m, n, dest_mat, C_mat_interm, D_mat_interm);
+    matrix_subtract(m, n, dest_mat, C_mat_interm, D_mat_interm);
 #if DEBUG
-    print_matrix(stdout,  m, n, D_mat_interm);
+    matrix_print(stdout, m, n, D_mat_interm);
 #endif
 
-    scal_matrix(m, n, 1.0/m, D_mat_interm, C_mat_interm);
+    matrix_scal(m, n, 1.0/m, D_mat_interm, C_mat_interm);
 #if DEBUG
-    print_matrix(stdout,  m, n, C_mat_interm);
+    matrix_print(stdout, m, n, C_mat_interm);
 #endif
 
-    init_matrix(m,m,src_mat_T);
-    transpose_matrix(m, m, C_mat_interm, src_mat_T);
+    matrix_init(n, m, src_mat_T);
+    matrix_transpose(m, n, C_mat_interm, src_mat_T);
 #if DEBUG
-    print_matrix(stdout,  n, m, src_mat_T);
+    matrix_print(stdout, n, m, src_mat_T);
 #endif
 
     T_vec=vector(m, T_vec);
@@ -506,7 +499,7 @@ int main(int argc, char* argv[])
     matrix_multiply(n, m, src_mat_T, one_vec, T_vec);
 #if DEBUG
     fprintf(stdout,"T:\n");
-    print_vector(stdout, 3, T_vec);
+    vector_print(stdout, 3, T_vec);
 #endif
 
     if(argc > 3)
@@ -522,16 +515,16 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
     
-    init_matrix(m,m,src_mat_T);
-    transpose_matrix(m, m, R_mat, src_mat_T);
+    matrix_init(n, m, src_mat_T);
+    matrix_transpose(n, n, R_mat, src_mat_T);
     fprintf(stdout,"R =\n");
 
-    print_matrix(stdout, n, n, src_mat_T);
+    matrix_print(stdout, n, n, src_mat_T);
     fprintf(stdout,"\n");
 
     fprintf(stdout,"T =\n");
 
-    print_vector(stdout, 3, T_vec);
+    vector_print(stdout, 3, T_vec);
     fprintf(stdout,"\n");
 
     fprintf(stdout,"s = %10.10lf (= %10.10lf ppm)\n\n",scal, ppm);
@@ -540,8 +533,8 @@ int main(int argc, char* argv[])
     {
         fprintf(stdout,"Results matrix:\n");
     }
-    print_matrix(outfile, n, n, src_mat_T);
-    print_vector(outfile, 3, T_vec);
+    matrix_print(outfile, n, n, src_mat_T);
+    vector_print(outfile, 3, T_vec);
     fprintf(outfile, "%10.10lf\n", scal);
     if(argc > 3)
     {
@@ -555,15 +548,15 @@ int main(int argc, char* argv[])
     freematrix(m, src_mat);
     freematrix(m, dest_mat);
     freematrix(m, E_mat);
-    freematrix(m, P_mat);
-    freematrix(m, D_mat);
-    freematrix(m, Q_mat);
-    freematrix(m, P_mat_T);
-    freematrix(m, R_mat);
-    freematrix(m, dest_mat_T);
-    freematrix(m, C_mat);
+    freematrix(n, P_mat);
+    freematrix(n, D_mat);
+    freematrix(n, Q_mat);
+    freematrix(n, P_mat_T);
+    freematrix(n, R_mat);
+    freematrix(n, dest_mat_T);
+    freematrix(n, C_mat);
     freematrix(m, C_mat_interm);
-    freematrix(m, src_mat_T);
+    freematrix(n, src_mat_T);
     freematrix(m, D_mat_interm);
 
     fprintf(stdout,"...done\n");
