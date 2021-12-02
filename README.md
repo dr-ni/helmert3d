@@ -40,9 +40,13 @@ Seven parameters are required for this kind of transformation
 and can be calculated from a set of at least three point correspondences
 [Crosilla, F. (1999). Procrustes analysis and geodetic sciences. Technical report, Quo
 vadis geodesia...?, Department of Geodesy and GeoInformatics, University of Stuttgart].
+A simple description of the SVD-based algorithm can be found here:
+http://dx.doi.org/10.18419/opus-523 on page 148 (A.3.1).
 
 All coordinates must be translated to XYZ coordinates, first, if the coordinate system is not cartesian.
-Transformations between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed with the tool helmeltrans. The ellipsoid name, as well as both axes of the ellipsoid must be predefined in a seperate textfile (ellipsoid_infile).
+Transformations between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed with the tool helmeltrans.
+The ellipsoid name, as well as both axes of the ellipsoid must be predefined in a seperate textfile (ellipsoid_infile).
+See also [common_ellipsoids.txt](./common_ellipsoids.txt) for common values.
 
 The tool helmparms3d reads two XYZ point-textfiles and calculates all necessary
 parameters for Helmert transformation. For further computations these parameters are stored in
@@ -79,7 +83,7 @@ helmert3d [xyz_src_infilename] [param_infilename] [xyz_transformed_outfilename]
 
 Coordinate system translatation:
 ```sh
-helmeltrans [blh|xyz] src_infilename  ellipsoid_infilename outfilename]
+helmeltrans [blh|xyz] [src_infilename]  [ellipsoid_infilename] [outfilename]
 ```
 
 Test:

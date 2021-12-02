@@ -1,4 +1,4 @@
-/* Copyright (C) 2020 U. Niethammer,  https://github.com/dr-ni/helmert3d
+/* Copyright (C) 2021 U. Niethammer,  https://github.com/dr-ni/helmert3d
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
