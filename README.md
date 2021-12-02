@@ -73,22 +73,22 @@ sudo make uninstall
 
 Parameter computation:
 ```sh
-helmparms3d [xyz_src_infilename] [xyz_dest_infilename] [parms_outfilename]
+helmparms3d xyz_src_infilename xyz_dest_infilename [parms_outfilename]
 ```
 
 Transformation:
 ```sh
-helmert3d [xyz_src_infilename] [param_infilename] [xyz_transformed_outfilename]
+helmert3d xyz_src_infilename param_infilename [xyz_transformed_outfilename]
 ```
 
 Coordinate system translatation:
 ```sh
-helmeltrans [blh|xyz] [src_infilename]  [ellipsoid_infilename] [outfilename]
+helmeltrans {blh|xyz} src_infilename ellipsoid_infilename [outfilename]
 ```
 
 Test:
 ```sh
-helmdiff3d [xyz_dest_infilename] [xyz_transformed_infilename] [xyz_diff_outfilename]
+helmdiff3d xyz_dest_infilename xyz_transformed_infilename [xyz_diff_outfilename]
 ```
 
 ## Files
