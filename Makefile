@@ -31,16 +31,11 @@ helmdiff3d: $(SRCS)/helmdiff3d.c
 helmeltrans: $(SRCS)/helmeltrans.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-pdfman: # not working for win
-	groff -m man -T ps $(MANS)/helmert3d.1 > man_helmert3d.ps
-	ps2pdf man_helmert3d.ps man_helmert3d.pdf
-	groff -m man -T ps $(MANS)/helmparms3d.1 > man_helmparms3d.ps
-	ps2pdf man_helmparms3d.ps man_helmparms3d.pdf
-	groff -m man -T ps $(MANS)/helmdiff3d.1 > man_helmdiff3d.ps
-	ps2pdf man_helmdiff3d.ps man_helmdiff3d.pdf
-	groff -m man -T ps $(MANS)/helmeltrans.1 > man_helmeltrans.ps
-	ps2pdf man_helmeltrans.ps man_helmeltrans.pdf
-	$(RM) *.ps
+pdfman:
+	groff -m man -T pdf $(MANS)/helmert3d.1 > man_helmert3d.pdf
+	groff -m man -T pdf $(MANS)/helmparms3d.1 > man_helmparms3d.pdf
+	groff -m man -T pdf $(MANS)/helmdiff3d.1 > man_helmdiff3d.pdf
+	groff -m man -T pdf $(MANS)/helmeltrans.1 > man_helmeltrans.pdf
 
 clean: # not working for win
 	$(RM) helmparms3d helmert3d helmdiff3d helmeltrans libsvdm.a $(SRCS)/svdm.o *.pdf
