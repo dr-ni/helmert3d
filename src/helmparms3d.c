@@ -288,6 +288,7 @@ int main(int argc, char* argv[])
     double **R_mat=NULL;
     double trace1=0.0, trace2=0.0;
     double scal=0.0, ppm=0.0;
+    double rx=0.0, ry=0.0, rz=0.0;
     FILE *outfile;
 
     fprintf(stdout,"\n*******************************\n");
@@ -514,7 +515,7 @@ int main(int argc, char* argv[])
         fprintf(stderr,"Error writing %s\n",out_param_name);
         exit(EXIT_FAILURE);
     }
-    
+
     matrix_init(n, m, src_mat_T);
     matrix_transpose(n, n, R_mat, src_mat_T);
     fprintf(stdout,"R =\n");
@@ -528,6 +529,12 @@ int main(int argc, char* argv[])
     fprintf(stdout,"\n");
 
     fprintf(stdout,"s = %10.10lf (= %10.10lf ppm)\n\n",scal, ppm);
+
+    rx = 0.5 * (src_mat_T[2][1] - src_mat_T[1][2]) * RAD2SEC;
+    ry = 0.5 * (src_mat_T[0][2] - src_mat_T[2][0]) * RAD2SEC;
+    rz = 0.5 * (src_mat_T[1][0] - src_mat_T[0][1]) * RAD2SEC;
+    fprintf(stdout,"Proj string:\n");
+    fprintf(stdout,"+towgs84=%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n\n", T_vec[0], T_vec[1], T_vec[2], rx, ry, rz, ppm);
 
     if(argc < 4)
     {

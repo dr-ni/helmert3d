@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
     command = argv[1];
-    if (!strcmp(command,"xyz")) 
+    if (!strcmp(command,"xyz"))
     {
         fprintf(stdout,"B-L-H -> X-Y-Z...\n");
     }
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     }
     else
         ofile = stdout;
-    
+
     if(ofile == NULL)
     {
         fprintf(stderr,"Error writing %s\n",ofilename);
@@ -142,9 +142,9 @@ int main(int argc, char* argv[])
     fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf\n", name, a, b);
     a2 = a * a;
     b2 = b * b;
-    ro = M_PI / 180.0;
-    roi = 180.0 / M_PI;
-    if (!strcmp(command,"xyz")) 
+    ro = DEG2RAD;
+    roi = RAD2DEG;
+    if (!strcmp(command,"xyz"))
     {
         while(fgets( ibuf, 256, ifile)!=NULL)
         {

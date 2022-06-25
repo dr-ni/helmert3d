@@ -22,9 +22,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define VERS "1.0.5"
+#define VERS "1.0.6"
 #define C_AUTHOR "U. Niethammer"
 #define C_YEAR "2021"
 #define DEBUG 0
+#define DEG2RAD (M_PI / 180.0)
+#define RAD2DEG (180 / M_PI)
+#define RAD2SEC (RAD2DEG * 3600)
 
 #endif // HELMERT3D_H
