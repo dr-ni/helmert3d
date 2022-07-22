@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     char *ofilename = "out.txt";
     char *command = "xyz";
     char ibuf[256], cbuf[256], name[128];
-    double a = 6378137.0, b = 6356752.3142, ro, roi;
+    double a = DEFAULT_A, b = DEFAULT_B, flattening, ro, roi;
     double a2, b2, bc, bs, lc, ls, ta, tb, nb, lt, bt, ht, xt, yt, zt;
     double x2, y2, z2, r2, r, e2, et2, kf, kg, kc, ks, ks2, kp, kq, r0, re, re2, ku, kv, kz, z0;
 
@@ -139,7 +139,8 @@ int main(int argc, char* argv[])
         fprintf(stderr,"Error wrong data format in %s\n",cfilename);
         exit(EXIT_FAILURE);
     }
-    fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf\n", name, a, b);
+    flattening = (a - b) / a;
+    fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf, f = %lf\n", name, a, b, flattening);
     a2 = a * a;
     b2 = b * b;
     ro = DEG2RAD;

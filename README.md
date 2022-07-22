@@ -86,6 +86,11 @@ Coordinate system translatation:
 helmeltrans {blh|xyz} src_infilename ellipsoid_infilename [outfilename]
 ```
 
+Transverse Mercator:
+```sh
+helmtmerc {blh|xyh} src_infilename ellipsoid_infilename zone_infilename [outfilename]
+```
+
 Test:
 ```sh
 helmdiff3d xyz_dest_infilename xyz_transformed_infilename [xyz_diff_outfilename]
@@ -118,9 +123,22 @@ BLH data file format:
  B[n] L[n] H[n]
 ```
 
+xyH data file format:
+```
+ x[1] y[1] H[1]
+ ..   ..   ..
+ ..   ..   ..
+ x[n] y[n] H[n]
+```
+
 Ellipsoid data file format:
 ```
  name a b
+```
+
+Zone data file format:
+```
+ zone_size zone_number [zone_scale] [L0] [x0] [y0]
 ```
 
 See ellipsoids : [Common Ellipsoids](./common_ellipsoids.txt)

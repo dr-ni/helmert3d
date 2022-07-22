@@ -1,31 +1,35 @@
-.TH "helmeltrans" 1 1.0.7 "22 Jul 2022" "User Manual"
+.TH "helmtmerc" 1 1.0.7 "22 Jul 2022" "User Manual"
 
 .SH NAME
-helmeltrans
+helmtmerc
 
 .SH DESCRIPTION
-3D Ellipsoidal Coordinate Transformation Tool
+Transverse Mercator Coordinate Transformation Tool
 
-With this tool transformations between ellipsoidal (B L H = LAT LON H) and cartesian (XYZ) coordinates can be managed.
-The ellipsoid name, as well as both axes of the ellipsoid must be predefined in a seperate textfile (ellipsoid_infile).
-See also /usr/share/doc/helmert3d/common_ellipsoids.txt for common values.
+The transverse Mercator projection in its various forms is the most widely used projected coordinate system for world
+topographical and offshore mapping. It is a conformal projection in which a chosen meridian projects to a straight
+line at constant scale.
 
 .SH SYNOPSIS
 helmeltrans {blh|xyz} src_infilename ellipsoid_infilename [outfilename]
 
 .SH DIRECTION
 .TP
-xyz
-convert B-L-H to X-Y-Z
+xyh
+convert B-L-H to x-y-H
 .TP
 blh
-convert X-Y-Z to B-L-H
+convert x-y-H to B-L-H
 
 .SH FILES
 .TP
 ellipsoid data file format:
 
  name a b
+.TP
+zone data file format:
+
+ zone_size zone_number [zone_scale] [L0] [x0] [y0]
 .TP
 blh data file format:
 
@@ -34,23 +38,24 @@ blh data file format:
  ..   ..   ..
  B[n] L[n] H[n]
 .TP
-xyz data file format:
+xyh data file format:
 
- X[1] Y[1] Z[1]
+ x[1] y[1] H[1]
  ..   ..   ..
  ..   ..   ..
- X[n] Y[n] Z[n]
+ x[n] y[n] H[n]
 
 .SH EXAMPLE
  export EXAMP=/usr/share/doc/helmert3d/examples/
  export ELLIPS=/usr/share/doc/helmert3d/ellipsoids/
+ export ZONES=/usr/share/doc/helmert3d/zones/
 
- helmeltrans xyz $EXAMP/testpoints_blh.txt $ELLIPS/GRS80.txt xyz.txt
- helmeltrans blh xyz.txt $ELLIPS/GRS80.txt blh.txt
+ helmtmerc xyh $EXAMP/testpoints_blh.txt $ELLIPS/GRS80.txt $ZONES/6g4zone.txt xyh.txt
+ helmtmerc blh xyh.txt $ELLIPS/GRS80.txt $ZONES/6g4zone.txt blh.txt
  helmdiff3d examples/testpoints_blh.txt blh.txt
 
 .SH COPYRIGHT
-helmeltrans:
+helmtmerc:
 
 Copyright (c) 2021 U. Niethammer
 
@@ -71,7 +76,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 .SH SEE ALSO
  helmparms3d(1),
  helmert3d(1),
- helmtmerc(1),
+ helmeltrans(1),
  helmdiff3d(1)
 
 .SH CONTACT
