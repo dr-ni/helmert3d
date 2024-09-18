@@ -145,30 +145,44 @@ int main(int argc, char* argv[])
     }
 
     fprintf(stdout,"Starting calculation...\n");
-    fgets( cbuf, 256, cfile);
-    stat = sscanf( cbuf, "%s %lf %lf", name, &a, &b);
-    if(stat != 3)
+    if(fgets(cbuf, 256, cfile)!=NULL)
     {
-        fprintf(stderr,"Error wrong data format in %s\n",cfilename);
+        stat = sscanf( cbuf, "%s %lf %lf", name, &a, &b);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",cfilename);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Error reading %s\n",cfilename);
         exit(EXIT_FAILURE);
     }
     flattening = (a - b) / a;
     fprintf(stdout,"Ellipsoid %s, a = %lf, b = %lf, f = %lf\n", name, a, b, flattening);
-    fgets( zbuf, 256, zfile);
-    stat = sscanf( zbuf, "%lf %lf %lf %lf %lf %lf", &zone_size, &zone_number, &zscale, &lo, &xo, &yo);
-    if(stat < 2)
+    if(fgets(zbuf, 256, zfile)!=NULL)
     {
-        fprintf(stderr,"Error wrong data format in %s\n",zfilename);
+        stat = sscanf( zbuf, "%lf %lf %lf %lf %lf %lf", &zone_size, &zone_number, &zscale, &lo, &xo, &yo);
+        if(stat < 2)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",zfilename);
+            exit(EXIT_FAILURE);
+        }
+        if(stat < 3)
+            zscale = 1.0;
+        if(stat < 4)
+            lo = (zone_number - 0.5) * zone_size;
+        if(stat < 5)
+            xo = 0;
+        if(stat < 6)
+            yo = (zone_number + 0.5) * 1E6;
+    }
+    else
+    {
+        fprintf(stderr,"Error reading %s\n",zfilename);
         exit(EXIT_FAILURE);
     }
-    if(stat < 3)
-        zscale = 1.0;
-    if(stat < 4)
-        lo = (zone_number - 0.5) * zone_size;
-    if(stat < 5)
-        xo = 0;
-    if(stat < 6)
-        yo = (zone_number + 0.5) * 1E6;
     fprintf(stdout,"Tmerc zs = %g, zn = %g, scale = %lf, L0 = %lf, x0 = %lf, y0 = %lf\n", zone_size, zone_number, zscale, lo, xo, yo);
     ro = DEG2RAD;
     roi = RAD2DEG;

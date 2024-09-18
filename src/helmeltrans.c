@@ -132,11 +132,18 @@ int main(int argc, char* argv[])
     }
 
     fprintf(stdout,"Starting calculation...\n");
-    fgets( cbuf, 256, cfile);
-    stat = sscanf( cbuf, "%s %lf %lf", name, &a, &b);
-    if(stat != 3)
+    if(fgets(cbuf, 256, cfile)!=NULL)
     {
-        fprintf(stderr,"Error wrong data format in %s\n",cfilename);
+        stat = sscanf( cbuf, "%s %lf %lf", name, &a, &b);
+        if(stat != 3)
+        {
+            fprintf(stderr,"Error wrong data format in %s\n",cfilename);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Error reading %s\n",cfilename);
         exit(EXIT_FAILURE);
     }
     flattening = (a - b) / a;
